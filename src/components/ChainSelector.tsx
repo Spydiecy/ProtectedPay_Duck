@@ -16,25 +16,25 @@ export interface ChainInfo {
 
 const SUPPORTED_CHAINS = [
   {
-    id: 1043,
-    hexId: '0x413',
-    name: 'BlockDAG Testnet',
-    icon: '/chains/blockdag.png',
-    symbol: 'BDAG',
-    rpcUrl: 'https://rpc.primordial.bdagscan.com',
-    blockExplorerUrl: 'https://primordial.bdagscan.com'
+    id: 2810,
+    hexId: '0xAFA',
+    name: 'Morph Holesky',
+    icon: '/chains/morph.png',
+    symbol: 'ETH',
+    rpcUrl: 'https://rpc-quicknode-holesky.morphl2.io',
+    blockExplorerUrl: 'https://explorer-holesky.morphl2.io'
   }
 ] as const;
 
 export const supportedChains: ChainInfo[] = [
   {
-    id: 1043,
-    hexId: '0x413',
-    name: 'BlockDAG Testnet',
-    icon: '/chains/blockdag.png',
-    symbol: 'BDAG',
-    rpcUrl: 'https://rpc.primordial.bdagscan.com',
-    blockExplorerUrl: 'https://primordial.bdagscan.com'
+    id: 2810,
+    hexId: '0xAFA',
+    name: 'Morph Holesky',
+    icon: '/chains/morph.png',
+    symbol: 'ETH',
+    rpcUrl: 'https://rpc-quicknode-holesky.morphl2.io',
+    blockExplorerUrl: 'https://explorer-holesky.morphl2.io'
   }
 ]
 

@@ -1,15 +1,15 @@
 import { ethers } from 'ethers';
 import { isValidAddress } from './address';
 
-const MAIN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_BDAG_MAIN_CONTRACT || '';
-const TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_BDAG_TOKEN_CONTRACT || '';
+const MAIN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_MORPH_MAIN_CONTRACT || '0x151D3c8E531d9726148FF64D5e8426C03D0e91eF';
+const TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_MORPH_TOKEN_CONTRACT || '0x0';
 
 const CONTRACT_ADDRESSES = {
-  1043: MAIN_CONTRACT_ADDRESS, // BlockDAG Testnet
+  2810: MAIN_CONTRACT_ADDRESS, // Morph Holesky Testnet
 } as const;
 
 const TOKEN_CONTRACT_ADDRESSES = {
-  1043: TOKEN_CONTRACT_ADDRESS, // BlockDAG Testnet
+  2810: TOKEN_CONTRACT_ADDRESS, // Morph Holesky Testnet
 } as const;
 
 const TOKEN_CONTRACT_ABI =  [
@@ -1853,7 +1853,7 @@ interface TransferEvent {
   // Gets the appropriate contract address based on chainId
   const getContractAddress = async (signer: ethers.Signer) => {
 	const chainId = await signer.getChainId();
-	return CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES] || CONTRACT_ADDRESSES[1043]; // Default to BlockDAG Testnet
+	return CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES] || CONTRACT_ADDRESSES[2810]; // Default to Morph Holesky Testnet
   };
   
   // Contract instance getter with chain awareness
@@ -2372,7 +2372,7 @@ userAddress: string
 // Token Contract Functions
 const getTokenContractAddress = async (signer: ethers.Signer) => {
   const chainId = await signer.getChainId();
-  return TOKEN_CONTRACT_ADDRESSES[chainId as keyof typeof TOKEN_CONTRACT_ADDRESSES] || TOKEN_CONTRACT_ADDRESSES[1043]; // Default to BlockDAG Testnet
+  return TOKEN_CONTRACT_ADDRESSES[chainId as keyof typeof TOKEN_CONTRACT_ADDRESSES] || TOKEN_CONTRACT_ADDRESSES[2810]; // Default to Morph Holesky Testnet
 };
 
 // Token contract instance getter with chain awareness
@@ -2383,7 +2383,7 @@ export const getTokenContract = async (signer: ethers.Signer) => {
 
 // Helper function to parse token amount with correct decimals
 const parseTokenAmount = (amount: string, tokenAddress: string): ethers.BigNumber => {
-  // Check if it's a specific token (custom logic for BlockDAG only)
+  // Check if it's a specific token (custom logic for Morph only)
   // if (tokenAddress.toLowerCase() === 'SPECIFIC_TOKEN_ADDRESS'.toLowerCase()) {
   //   return ethers.utils.parseUnits(amount, 6);
   // }
@@ -2606,7 +2606,7 @@ export const getTokenAllowance = async (
 	return ethers.constants.MaxUint256.toString();
   }
   
-  // BlockDAG: All tokens use standard ERC20 allowance logic
+  // Morph: All tokens use standard ERC20 allowance logic
   
   // For other ERC20 tokens, use standard ERC20 interface
   const erc20Contract = new ethers.Contract(tokenAddress, [

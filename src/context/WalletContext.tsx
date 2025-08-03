@@ -22,33 +22,33 @@ type ExtendedProvider = ethers.providers.ExternalProvider & {
 };
 
 // Define chains
-const blockdagNetwork = {
-  id: 1043,
-  name: 'BlockDAG Testnet',
-  network: 'blockdag-testnet',
+const morphHoleskyNetwork = {
+  id: 2810,
+  name: 'Morph Holesky',
+  network: 'morph-holesky',
   nativeCurrency: {
     decimals: 18,
-    name: 'BDAG',
-    symbol: 'BDAG',
+    name: 'ETH',
+    symbol: 'ETH',
   },
   rpcUrls: {
     public: {
-      http: ['https://rpc.primordial.bdagscan.com', 'https://test-rpc.primordial.bdagscan.com']
+      http: ['https://rpc-quicknode-holesky.morphl2.io']
     },
     default: {
-      http: ['https://rpc.primordial.bdagscan.com', 'https://test-rpc.primordial.bdagscan.com']
+      http: ['https://rpc-quicknode-holesky.morphl2.io']
     },
   },
   blockExplorers: {
     default: {
-      name: 'BlockDAG Explorer',
-      url: 'https://primordial.bdagscan.com'
+      name: 'Morph Explorer',
+      url: 'https://explorer-holesky.morphl2.io'
     },
   },
   testnet: true,
 } as const;
 
-const chains = [blockdagNetwork] as const;
+const chains = [morphHoleskyNetwork] as const;
 
 const projectId = 'b8ad206ba9492e6096fa0aa0f868586c';
 
@@ -68,7 +68,7 @@ const wagmiConfig = createConfig({
   connectors,
   chains,
   transports: {
-    [blockdagNetwork.id]: http(),
+    [morphHoleskyNetwork.id]: http(),
   },
 });
 

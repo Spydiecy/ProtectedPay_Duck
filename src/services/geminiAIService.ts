@@ -103,13 +103,13 @@ export class GeminiProtectedPayService {
       const recentTokenMention = this.conversationContext.messageHistory
         .slice(-3) // Look at last 3 messages
         .find(msg => msg.role === 'user' && 
-          msg.content.toLowerCase().match(/\b(bdag|usdc|usdt|blockdag)\b/i))
+          msg.content.toLowerCase().match(/\b(eth|usdc|usdt|morph)\b/i))
       
       let contextualPrompt = ''
       if (lastResponse && lastResponse.content.includes('Balance:')) {
         // Previous message was a balance response, check if this is asking for different token or all tokens
         const tokenPatterns = [
-          /\b(bdag|block-dag|BDAG|in\s+bdag)\b/i,
+          /\b(eth|ethereum|ETH|in\s+eth)\b/i,
           /\b(usdc|usd-c|USDC|in\s+usdc)\b/i,
           /\b(usdt|usd-t|USDT|in\s+usdt)\b/i
         ]
@@ -164,11 +164,11 @@ AVAILABLE ACTIONS:
 TRANSACTION FILTERING OPTIONS:
 - By Status: "show refunded transactions", "pending transfers", "completed payments"
 - By Direction: "sent transactions", "received transfers", "outgoing payments"  
-- By Token: "BDAG transactions", "USDC transfers", "USDT payments"
-- Combined: "show my refunded BDAG transfers", "pending USDC transactions"
+- By Token: "ETH transactions", "USDC transfers", "USDT payments"
+- Combined: "show my refunded ETH transfers", "pending USDC transactions"
 
 SUPPORTED CHAINS:
-- BlockDAG Testnet (Chain ID: 1043)
+- Morph Holesky Testnet (Chain ID: 2810)
 
 CURRENT CONTEXT:
 - User Address: ${address || 'Not connected'}
@@ -199,7 +199,7 @@ Provide a helpful response and if action is needed, specify the action type and 
 
 Examples:
 - "Check my balance" → ACTION: balance check (execute immediately)
-- "Send 100 BDAG to 0x123..." → ACTION: send transfer (ask for confirmation)
+- "Send 100 ETH to 0x123..." → ACTION: send transfer (ask for confirmation)
 - "Register username alice" → ACTION: register username (ask for confirmation)
 - "What chains are supported?" → ACTION: chain info (execute immediately)
 - "Show pending transfers" → ACTION: view transfers (execute immediately)`
@@ -291,33 +291,33 @@ Examples:
     const isFollowUpBalanceQuery = lastResponse && lastResponse.content.includes('Balance:') && 
       (userLower.includes('for all') || userLower.includes('all tokens') || 
        userLower.includes('all balances') || userLower.includes('show all') ||
-       userLower.match(/^\s*(bdag|usdc|usdt|blockdag)\s*$/i) ||
-       userLower.match(/\b(in|for)\s+(bdag|usdc|usdt|blockdag)\b/i) ||
-       userLower.match(/^(for|in)\s+(bdag|usdc|usdt|blockdag)$/i))
+       userLower.match(/^\s*(eth|usdc|usdt|morph)\s*$/i) ||
+       userLower.match(/\b(in|for)\s+(eth|usdc|usdt|morph)\b/i) ||
+       userLower.match(/^(for|in)\s+(eth|usdc|usdt|morph)$/i))
     
     // Also check if user mentioned a token and then said "balance"
     const recentTokenMention = this.conversationContext.messageHistory
       .slice(-3) // Look at last 3 messages
       .find(msg => msg.role === 'user' && 
-        msg.content.toLowerCase().match(/\b(bdag|usdc|usdt|blockdag)\b/i))
+        msg.content.toLowerCase().match(/\b(eth|usdc|usdt|morph)\b/i))
     
     const isTokenBalanceFollowUp = recentTokenMention && userLower.includes('balance') && 
-      !userLower.match(/\b(bdag|usdc|usdt|blockdag)\b/i)
+      !userLower.match(/\b(eth|usdc|usdt|morph)\b/i)
     
     // Balance check patterns - improved to detect specific tokens and follow-up queries
     if (userLower.includes('balance') || userLower.includes('how much') || 
-        userLower.match(/\b(in|my)\s+(bdag|usdc|usdt|blockdag)\b/i) ||
-        userLower.match(/^\s*(bdag|usdc|usdt|blockdag)\s*$/i) ||
+        userLower.match(/\b(in|my)\s+(eth|usdc|usdt|morph)\b/i) ||
+        userLower.match(/^\s*(eth|usdc|usdt|morph)\s*$/i) ||
         userLower.includes('for all') || userLower.includes('all tokens') || 
         userLower.includes('all balances') || userLower.includes('show all') ||
         isFollowUpBalanceQuery || isTokenBalanceFollowUp) {
       
       const addressMatch = userMessage.match(/0x[a-fA-F0-9]{40}/)
-      const chainMatch = userMessage.match(/chain\s+(\d+)|on\s+(\d+)|testnet|mainnet|blockdag/)
+      const chainMatch = userMessage.match(/chain\s+(\d+)|on\s+(\d+)|testnet|mainnet|morph/)
       
       // Extract specific token mentions - improved pattern matching including follow-up queries
       const tokenPatterns = [
-        /\b(bdag|block-dag|BDAG|in\s+bdag|^\s*bdag\s*$)\b/i,        // BDAG variations
+        /\b(eth|ethereum|ETH|in\s+eth|^\s*eth\s*$)\b/i,        // ETH variations
         /\b(usdc|usd-c|USDC|in\s+usdc|^\s*usdc\s*$)\b/i,            // USDC variations  
         /\b(usdt|usd-t|USDT|in\s+usdt|^\s*usdt\s*$)\b/i             // USDT variations
       ]
@@ -340,7 +340,7 @@ Examples:
       
       // If no token detected in current message but this is a follow-up to a token mention
       if (!detectedToken && isTokenBalanceFollowUp && recentTokenMention) {
-        const tokenMatch = recentTokenMention.content.toLowerCase().match(/\b(bdag|usdc|usdt)\b/i)
+        const tokenMatch = recentTokenMention.content.toLowerCase().match(/\b(eth|usdc|usdt)\b/i)
         if (tokenMatch) {
           let tokenSymbol = tokenMatch[1].toUpperCase()
           detectedToken = tokenSymbol
@@ -371,7 +371,7 @@ Examples:
         type: 'send',
         data: {
           amount: amountMatch ? amountMatch[1] : null,
-          token: amountMatch ? amountMatch[2] : 'BDAG',
+          token: amountMatch ? amountMatch[2] : 'ETH',
           recipient: addressMatch ? addressMatch[1] : null,
           message: messageMatch ? (messageMatch[1] || messageMatch[2]) : ''
         }
@@ -459,7 +459,7 @@ Examples:
       
       // Check for token-specific transactions
       const tokenPatterns = [
-        { pattern: /\b(bdag|bdagtoken)\s+(transaction|transfer|payment)/i, filter: 'BDAG transactions' },
+        { pattern: /\b(eth|ethtoken)\s+(transaction|transfer|payment)/i, filter: 'ETH transactions' },
         { pattern: /\b(usdc|usd-c)\s+(transaction|transfer|payment)/i, filter: 'USDC transactions' },
         { pattern: /\b(usdt|usd-t)\s+(transaction|transfer|payment)/i, filter: 'USDT transactions' },
         { pattern: /\b(tusdfc|t-usdfc)\s+(transaction|transfer|payment)/i, filter: 'tUSDFC transactions' },
@@ -543,7 +543,7 @@ Examples:
         (userLower.includes('grp') && userLower.includes('payment')) ||
         userLower.includes('group payments') || userLower.includes('grp payments')) {
       if (userLower.includes('create') || userLower.includes('new') || userLower.includes('start')) {
-        // Create group payment: "Create group payment for 100 BDAG with 5 people for Alice"
+        // Create group payment: "Create group payment for 100 ETH with 5 people for Alice"
         const amountMatch = userMessage.match(/(\d+(?:\.\d+)?)\s*(\w+)?/)
         const participantsMatch = userMessage.match(/(\d+)\s*(?:people|participants|users|members)/)
         const recipientMatch = userMessage.match(/for\s+(\w+|0x[a-fA-F0-9]{40})/)
@@ -552,13 +552,13 @@ Examples:
           type: 'create_group_payment',
           data: {
             amount: amountMatch ? amountMatch[1] : null,
-            token: amountMatch ? amountMatch[2] : 'BDAG',
+            token: amountMatch ? amountMatch[2] : 'ETH',
             participants: participantsMatch ? parseInt(participantsMatch[1]) : null,
             recipient: recipientMatch ? recipientMatch[1] : null
           }
         }
       } else if (userLower.includes('contribute') || userLower.includes('add')) {
-        // Contribute to group payment: "Contribute 10 BDAG to group payment 0x123"
+        // Contribute to group payment: "Contribute 10 ETH to group payment 0x123"
         const amountMatch = userMessage.match(/(\d+(?:\.\d+)?)\s*(\w+)?/)
         const idMatch = userMessage.match(/(0x[a-fA-F0-9]+)/)
         
@@ -566,7 +566,7 @@ Examples:
           type: 'contribute_group_payment',
           data: {
             amount: amountMatch ? amountMatch[1] : null,
-            token: amountMatch ? amountMatch[2] : 'BDAG',
+            token: amountMatch ? amountMatch[2] : 'ETH',
             paymentId: idMatch ? idMatch[1] : null
           }
         }
@@ -579,7 +579,7 @@ Examples:
         (userLower.includes('savings') && userLower.includes('pot')) || 
         (userLower.includes('saving') && userLower.includes('pot'))) {
       if (userLower.includes('create') || userLower.includes('new') || userLower.includes('start')) {
-        // Create savings pot: "Create savings pot 'Vacation' with target 500 BDAG"
+        // Create savings pot: "Create savings pot 'Vacation' with target 500 ETH"
         const nameMatch = userMessage.match(/['"]([^'"]+)['"]|pot\s+(\w+)/)
         const targetMatch = userMessage.match(/target\s+(\d+(?:\.\d+)?)\s*(\w+)?|(\d+(?:\.\d+)?)\s*(\w+)?/)
         
@@ -588,11 +588,11 @@ Examples:
           data: {
             name: nameMatch ? (nameMatch[1] || nameMatch[2]) : null,
             targetAmount: targetMatch ? (targetMatch[1] || targetMatch[3]) : null,
-            token: targetMatch ? (targetMatch[2] || targetMatch[4]) : 'BDAG'
+            token: targetMatch ? (targetMatch[2] || targetMatch[4]) : 'ETH'
           }
         }
       } else if (userLower.includes('contribute') || userLower.includes('add')) {
-        // Contribute to savings pot: "Add 50 BDAG to pot 0x123"
+        // Contribute to savings pot: "Add 50 ETH to pot 0x123"
         const amountMatch = userMessage.match(/(\d+(?:\.\d+)?)\s*(\w+)?/)
         const idMatch = userMessage.match(/(0x[a-fA-F0-9]+)/)
         
@@ -600,7 +600,7 @@ Examples:
           type: 'contribute_savings_pot',
           data: {
             amount: amountMatch ? amountMatch[1] : null,
-            token: amountMatch ? amountMatch[2] : 'BDAG',
+            token: amountMatch ? amountMatch[2] : 'ETH',
             potId: idMatch ? idMatch[1] : null
           }
         }
@@ -636,12 +636,12 @@ Examples:
     // Enhanced contribute patterns for button actions
     if (userLower.includes('contribute to group payment') && userMessage.match(/0x[a-fA-F0-9]+/)) {
       const idMatch = userMessage.match(/(0x[a-fA-F0-9]+)/)
-      const amountMatch = userMessage.match(/(\d+(?:\.\d+)?)\s*(bdag|usdc|usdt)?/i)
+      const amountMatch = userMessage.match(/(\d+(?:\.\d+)?)\s*(eth|usdc|usdt)?/i)
       
       if (!amountMatch) {
         // Prompt for amount when missing
         return {
-          message: `💰 **Contribute to Group Payment**\n\nPlease specify the amount you'd like to contribute.\n\n**Example:** "Contribute 50 BDAG to group payment ${idMatch ? idMatch[1] : '[ID]'}"\n\nℹ️ You can contribute any amount to help reach the group goal!`,
+          message: `💰 **Contribute to Group Payment**\n\nPlease specify the amount you'd like to contribute.\n\n**Example:** "Contribute 50 ETH to group payment ${idMatch ? idMatch[1] : '[ID]'}"\n\nℹ️ You can contribute any amount to help reach the group goal!`,
           action: {
             type: 'contribute_group_payment',
             data: {
@@ -656,7 +656,7 @@ Examples:
         type: 'contribute_group_payment',
         data: {
           amount: amountMatch ? parseFloat(amountMatch[1]) : null,
-          token: amountMatch?.[2]?.toUpperCase() || 'BDAG',
+          token: amountMatch?.[2]?.toUpperCase() || 'ETH',
           paymentId: idMatch ? idMatch[1] : null
         }
       }
@@ -665,12 +665,12 @@ Examples:
     // Enhanced savings pot contribution patterns
     if (userLower.includes('contribute to savings pot') && userMessage.match(/0x[a-fA-F0-9]+/)) {
       const idMatch = userMessage.match(/(0x[a-fA-F0-9]+)/)
-      const amountMatch = userMessage.match(/(\d+(?:\.\d+)?)\s*(bdag|usdc|usdt)?/i)
+      const amountMatch = userMessage.match(/(\d+(?:\.\d+)?)\s*(eth|usdc|usdt)?/i)
       
       if (!amountMatch) {
         // Prompt for amount when missing
         return {
-          message: `🏦 **Deposit to Savings Pot**\n\nPlease specify the amount you'd like to deposit.\n\n**Example:** "Contribute 100 BDAG to savings pot ${idMatch ? idMatch[1] : '[ID]'}"\n\nℹ️ Every deposit helps you reach your savings goal!`,
+          message: `🏦 **Deposit to Savings Pot**\n\nPlease specify the amount you'd like to deposit.\n\n**Example:** "Contribute 100 ETH to savings pot ${idMatch ? idMatch[1] : '[ID]'}"\n\nℹ️ Every deposit helps you reach your savings goal!`,
           action: {
             type: 'contribute_savings_pot',
             data: {
@@ -685,7 +685,7 @@ Examples:
         type: 'contribute_savings_pot',
         data: {
           amount: amountMatch ? parseFloat(amountMatch[1]) : null,
-          token: amountMatch?.[2]?.toUpperCase() || 'BDAG',
+          token: amountMatch?.[2]?.toUpperCase() || 'ETH',
           potId: idMatch ? idMatch[1] : null
         }
       }
@@ -861,7 +861,7 @@ Examples:
           if (totalTransfers === 0 && (groupPayments?.length || 0) === 0 && (savingsPots?.length || 0) === 0) {
             message += `🤷 No transactions found yet. Start by sending some funds or creating a savings pot!`
           } else {
-            message += `💡 Try: "show refunded transactions", "show my sent transfers", or "find BDAG payments" for filtered results.`
+            message += `💡 Try: "show refunded transactions", "show my sent transfers", or "find ETH payments" for filtered results.`
           }
           
           return {
@@ -875,10 +875,10 @@ Examples:
         
       case 'chain_info':
         return {
-          message: `⛓️ **Supported Chains:**\n• BlockDAG Testnet (ID: 1043)`,
+          message: `⛓️ **Supported Chains:**\n• Morph Holesky Testnet (ID: 2810)`,
           data: {
             chains: [
-              { name: 'BlockDAG Testnet', id: 1043 }
+              { name: 'Morph Holesky Testnet', id: 2810 }
             ]
           }
         }
@@ -1043,7 +1043,7 @@ Examples:
           if (payments.length === 0) {
             message += '📭 No group payments found.\n\n'
             message += '💡 **Create your first group payment:**\n'
-            message += '• "Create group payment for 100 BDAG with 5 people for Alice"\n'
+            message += '• "Create group payment for 100 ETH with 5 people for Alice"\n'
             message += '• "Start group payment for birthday gift"\n'
           } else {
             // Use modern card-based UI for group payments
@@ -1067,7 +1067,7 @@ Examples:
               message += `  <div style="display: flex; align-items: center; gap: 12px; flex: 1;">\n`
               message += `    <span style="font-size: 16px;">👥</span>\n`
               message += `    <div>\n`
-              message += `      <div style="color: #ffffff; font-weight: 600; font-size: 14px;">${displayAmount} BDAG</div>\n`
+              message += `      <div style="color: #ffffff; font-weight: 600; font-size: 14px;">${displayAmount} ETH</div>\n`
               message += `      <div style="color: #a1a1aa; font-size: 11px;">${participants} people → ${shortRecipient}</div>\n`
               message += `    </div>\n`
               message += `  </div>\n`
@@ -1085,8 +1085,8 @@ Examples:
             
             message += `💡 **Quick Actions:**\n`
             message += `• Click the 💰 button on any active group payment to contribute\n`
-            message += `• Try: "Create group payment for 200 FLOW with 4 people for Alice"\n`
-            message += `• Try: "Create group payment for 200 BDAG with 4 people for Alice"\n`
+            message += `• Try: "Create group payment for 200 ETH with 4 people for Alice"\n`
+            message += `• Try: "Create group payment for 200 ETH with 4 people for Alice"\n`
             message += `• Ask: "Show my group payment contributions"\n`
           }
           
@@ -1116,7 +1116,7 @@ Examples:
             message += `  <div style="color: #ffffff; font-size: 18px; font-weight: 600; margin-bottom: 8px;">No Savings Pots Yet</div>\n`
             message += `  <div style="color: #a1a1aa; font-size: 14px; margin-bottom: 16px;">Start saving for your goals today!</div>\n`
             message += `  <div style="color: #10b981; font-size: 14px; font-weight: 500;">\n`
-            message += `    💡 Try: "Create savings pot 'Vacation' with target 500 BDAG"\n`
+            message += `    💡 Try: "Create savings pot 'Vacation' with target 500 ETH"\n`
             message += `  </div>\n`
             message += `</div>\n\n`
           } else {
@@ -1157,8 +1157,8 @@ Examples:
               message += `    <span style="background: ${statusColor}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">${statusText}</span>\n`
               message += `  </div>\n`
               message += `  <div style="margin-bottom: 12px;">\n`
-              message += `    <div style="color: #ffffff; font-size: 16px; font-weight: 700; margin-bottom: 4px;">${displayCurrent} / ${displayTarget} FLOW</div>\n`
-              message += `    <div style="color: #ffffff; font-size: 16px; font-weight: 700; margin-bottom: 4px;">${displayCurrent} / ${displayTarget} BDAG</div>\n`
+              message += `    <div style="color: #ffffff; font-size: 16px; font-weight: 700; margin-bottom: 4px;">${displayCurrent} / ${displayTarget} ETH</div>\n`
+              message += `    <div style="color: #ffffff; font-size: 16px; font-weight: 700; margin-bottom: 4px;">${displayCurrent} / ${displayTarget} ETH</div>\n`
               message += `    <div style="background: #374151; border-radius: 8px; height: 6px; overflow: hidden;">\n`
               message += `      <div style="background: linear-gradient(90deg, #10b981 0%, #34d399 100%); height: 100%; width: ${progress}%; transition: width 0.3s ease;"></div>\n`
               message += `    </div>\n`
@@ -1178,8 +1178,8 @@ Examples:
             
             message += `💡 **Quick Actions:**\n`
             message += `• Click the 💰 Deposit button to add funds to any pot\n`
-            message += `• Try: "Create savings pot 'Vacation Fund' with target 1000 FLOW"\n`
-            message += `• Try: "Create savings pot 'Vacation Fund' with target 1000 BDAG"\n`
+            message += `• Try: "Create savings pot 'Vacation Fund' with target 1000 ETH"\n`
+            message += `• Try: "Create savings pot 'Vacation Fund' with target 1000 ETH"\n`
             message += `• Ask: "Show my savings progress"\n`
           }
           
@@ -1209,7 +1209,7 @@ Examples:
             const processedNative = nativeTransfers.map((transfer: any) => ({
               ...transfer,
               type: 'transfer',
-              tokenInfo: { symbol: 'BDAG', isNative: true },
+              tokenInfo: { symbol: 'ETH', isNative: true },
               id: `${transfer.sender}-${transfer.recipient}-${transfer.timestamp}`
             }))
             allTransfers = [...allTransfers, ...processedNative]
@@ -1221,7 +1221,7 @@ Examples:
               ...transfer,
               type: 'transfer',
               tokenInfo: { 
-                symbol: transfer.token === ethers.constants.AddressZero ? 'BDAG' : 'TOKEN',
+                symbol: transfer.token === ethers.constants.AddressZero ? 'ETH' : 'TOKEN',
                 isNative: transfer.isNativeToken || false
               },
               id: `${transfer.sender}-${transfer.recipient}-${transfer.timestamp}`
@@ -1311,8 +1311,8 @@ Examples:
           message += `🛠️ **Quick Actions:**\n`
           message += `• Use buttons on cards for quick actions\n`
           message += `• "Show my group payments" | "Show my savings pots"\n`
-          message += `• "Send [amount] FLOW to [address]"\n`
-          message += `• "Send [amount] BDAG to [address]"\n`
+          message += `• "Send [amount] ETH to [address]"\n`
+          message += `• "Send [amount] ETH to [address]"\n`
           
           return {
             message: message,
@@ -1372,7 +1372,7 @@ Examples:
                 const displayAmount = amount > 0 ? (amount / 1e18).toFixed(4) : '0.0000'
                 const counterparty = isOutgoing ? transfer.recipient : transfer.sender
                 const shortAddress = counterparty ? `${counterparty.slice(0, 6)}...${counterparty.slice(-4)}` : 'Unknown'
-                const token = transfer.token?.symbol || 'BDAG'
+                const token = transfer.token?.symbol || 'ETH'
                 const date = transfer.timestamp ? new Date(transfer.timestamp * 1000).toLocaleDateString('en-US', {
                   month: 'short', day: '2-digit', year: 'numeric'
                 }) : 'N/A'
@@ -1453,7 +1453,7 @@ Examples:
               message += `    </div>\n`
               message += `    <span style="background: ${statusColor}; color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 500;">${statusText}</span>\n`
               message += `  </div>\n`
-              message += `  <div style="color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 8px;">${displayAmount} FLOW</div>\n`
+              message += `  <div style="color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 8px;">${displayAmount} ETH</div>\n`
               message += `  <div style="color: #a1a1aa; font-size: 14px; margin-bottom: 4px;">For ${participants} participants → ${shortRecipient}</div>\n`
               message += `  <div style="display: flex; justify-content: between; align-items: center;">\n`
               message += `    <span style="color: #71717a; font-size: 12px;">${date}</span>\n`
@@ -1499,7 +1499,7 @@ Examples:
               message += `    <span style="background: ${statusColor}; color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 500;">${statusText}</span>\n`
               message += `  </div>\n`
               message += `  <div style="color: #ffffff; font-size: 16px; font-weight: 600; margin-bottom: 8px;">"${pot.name || 'Unnamed Pot'}"</div>\n`
-              message += `  <div style="color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 8px;">${displayCurrent} / ${displayTarget} FLOW</div>\n`
+              message += `  <div style="color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 8px;">${displayCurrent} / ${displayTarget} ETH</div>\n`
               message += `  <div style="background: #374151; border-radius: 8px; height: 8px; margin-bottom: 8px; overflow: hidden;">\n`
               message += `    <div style="background: linear-gradient(90deg, #10b981 0%, #34d399 100%); height: 100%; width: ${progress}%; transition: width 0.3s ease;"></div>\n`
               message += `  </div>\n`
@@ -1548,7 +1548,7 @@ Examples:
         // Get proper token from supported tokens
         const supportedTokens = getSupportedTokensForChain(chainId || 545)
         const token = supportedTokens.find(t => 
-          t.symbol.toLowerCase() === (data.token || 'FLOW').toLowerCase()
+          t.symbol.toLowerCase() === (data.token || 'ETH').toLowerCase()
         ) || supportedTokens.find(t => t.isNative) || supportedTokens[0]
         
         return await this.aiService.sendTransfer(
@@ -1641,7 +1641,7 @@ Examples:
 
   private getChainName(chainId?: number): string {
     switch (chainId) {
-      case 1043: return 'BlockDAG Testnet'
+      case 2810: return 'Morph Holesky'
       default: return 'Unknown Chain'
     }
   }

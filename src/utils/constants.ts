@@ -35,14 +35,14 @@ export const SUPPORTED_TOKENS_BY_CHAIN: Record<number, Array<{
   logo: string;
   isNative: boolean;
 }>> = {
-  // BlockDAG Testnet
-  1043: [
+  // Morph Holesky Testnet
+  2810: [
     {
       address: 'NATIVE',
-      symbol: 'BDAG',
-      name: 'BDAG (Native)',
+      symbol: 'ETH',
+      name: 'ETH (Native)',
       decimals: 18,
-      logo: '/chains/blockdag.png',
+      logo: '/chains/eth.svg',
       isNative: true
     },
     {
@@ -64,12 +64,12 @@ export const SUPPORTED_TOKENS_BY_CHAIN: Record<number, Array<{
   ]
 } as const;
 
-// Legacy support - defaults to BlockDAG tokens
-export const SUPPORTED_TOKENS = SUPPORTED_TOKENS_BY_CHAIN[1043];
+// Legacy support - defaults to Morph Holesky tokens
+export const SUPPORTED_TOKENS = SUPPORTED_TOKENS_BY_CHAIN[2810];
 
 // Helper function to get supported tokens for a specific chain
 export const getSupportedTokensForChain = (chainId: number) => {
-  return SUPPORTED_TOKENS_BY_CHAIN[chainId] || SUPPORTED_TOKENS_BY_CHAIN[1043]; // Default to BlockDAG Testnet
+  return SUPPORTED_TOKENS_BY_CHAIN[chainId] || SUPPORTED_TOKENS_BY_CHAIN[2810]; // Default to Morph Holesky Testnet
 };
 
 export type Token = typeof SUPPORTED_TOKENS[number];
