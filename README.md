@@ -23,7 +23,7 @@
 
 ### 🤖 AI-Powered Assistant
 
-<img align="right" src="https://github.com/user-attachments/assets/176690f6-2121-410d-901d-86083291e101" width="350px">
+<img align="right" src="https://github.com/user-attachments/assets/5346495d-1fd2-4735-bd29-a96a8ad27d99" width="350px">
 
 - **Natural Language Commands**: Send transfers using plain English - "Send 10 ETH to alice"
 - **Voice Input Support**: Use your microphone for hands-free interaction
@@ -37,7 +37,7 @@
 
 ### 🛡️ Protected Transfers on Multi-Chain Networks
 
-<img align="right" src="https://github.com/user-attachments/assets/e821b4df-b4e4-46f0-883d-24cb395449c3" width="350px">
+<img align="right" src="https://github.com/user-attachments/assets/0bef280d-2ffd-4669-817a-ef8985831dc7" width="350px">
 
 - **Escrow-Like Protection**: Funds remain secure until claimed by recipient
 - **Refundable Transfers**: Easily recover funds if sent to the wrong address
@@ -52,7 +52,7 @@
 
 ### 👥 Group Payments
 
-<img align="right" src="https://github.com/user-attachments/assets/ab062089-53a0-4cc2-82db-f41661497baf" width="350px">
+<img align="right" src="https://github.com/user-attachments/assets/35f41b07-3fec-4526-846a-2bc963cd6777" width="350px">
 
 - **Split Expenses Easily**: Divide costs among friends or colleagues
 - **Simple Contributors**: Accept payments from any Morph user
@@ -65,7 +65,7 @@
 
 ### 💰 Savings Pots
 
-<img align="right" src="https://github.com/user-attachments/assets/0bb82ec0-1b6d-4417-b8f1-4d9a2f8a353c" width="350px">
+<img align="right" src="https://github.com/user-attachments/assets/0e14b1b2-6224-4a3f-a27d-b4a2a09254cb" width="350px">
 
 - **Goal-Based Savings**: Set targets and track progress visually
 - **Morph Optimized**: Create dedicated savings on Morph Holesky Testnet
@@ -107,7 +107,7 @@ ProtectedPay is built for the Morph Holesky Testnet, with AI-powered assistance 
 </div>
 
 <div align="ledt">
-  <img src="https://github.com/user-attachments/assets/95778d7f-7dff-402b-9d14-c010dab81ce3" width="700px">
+  <img src="https://github.com/user-attachments/assets/cb9ac79e-9533-414a-9adf-6bec00113708" width="700px">
   <p><i>Comprehensive dashboard with activity tracking</i></p>
 </div>
 
@@ -141,7 +141,7 @@ ProtectedPay is built for the Morph Holesky Testnet, with AI-powered assistance 
 ## 💻 User Interface
 
 <div align="left">
-  <img src="https://github.com/user-attachments/assets/3fc6b767-f131-4cac-804e-addf7c401c96" width="700px">
+  <img src="https://github.com/user-attachments/assets/7669de82-87e2-4e44-a4dc-c6317cc5b8f1" width="700px">
   <p><i>Modern, intuitive interface with glassmorphism design</i></p>
 </div>
 
@@ -156,7 +156,7 @@ ProtectedPay is built for the Morph Holesky Testnet, with AI-powered assistance 
 ### Dashboard Experience
 
 <div align="ledt">
-  <img src="https://github.com/user-attachments/assets/61677ea8-4c6e-4d42-b7e9-b777e52b2c84" width="700px">
+  <img src="https://github.com/user-attachments/assets/b7ff4e60-6bb0-4046-b68e-ae0f5a4e84a5" width="700px">
   <p><i>Comprehensive dashboard with activity tracking</i></p>
 </div>
 
@@ -204,23 +204,11 @@ ProtectedPay prioritizes security at every level:
   </table>
 </div>
 
-## 🎬 Demo
-
-See ProtectedPay in action:
-
-<div align="left">
-  <a href="https://youtu.be/TJgnpVpa51c?si=ojjzXsVgQBj_BSGN">
-    <img src="https://img.youtube.com/vi/TJgnpVpa51c/0.jpg" alt="ProtectedPay Demo Video" width="500px">
-  </a>
-  <p><b>Click to watch the demo video</b></p>
-</div>
-
 ## 📞 Support
 
 Need assistance or have questions? We're here to help:
 
 - **Email**: [protectedpay.business@gmail.com](mailto:protectedpay.business@gmail.com)
-- **Report Issues**: [GitHub Issues](https://github.com/username/protectedpay/issues)
 
 ---
 
