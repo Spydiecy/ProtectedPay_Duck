@@ -16,25 +16,25 @@ export interface ChainInfo {
 
 const SUPPORTED_CHAINS = [
   {
-    id: 2810,
-    hexId: '0xAFA',
-    name: 'Morph Holesky',
-    icon: '/chains/morph.png',
-    symbol: 'ETH',
-    rpcUrl: 'https://rpc-quicknode-holesky.morphl2.io',
-    blockExplorerUrl: 'https://explorer-holesky.morphl2.io'
+    id: 1328,
+    hexId: '0x530',
+    name: 'Sei Testnet',
+    icon: '/chains/sei.svg',
+    symbol: 'SEI',
+    rpcUrl: 'https://evm-rpc-testnet.sei-apis.com',
+    blockExplorerUrl: 'https://testnet.seistream.app'
   }
 ] as const;
 
 export const supportedChains: ChainInfo[] = [
   {
-    id: 2810,
-    hexId: '0xAFA',
-    name: 'Morph Holesky',
-    icon: '/chains/morph.png',
-    symbol: 'ETH',
-    rpcUrl: 'https://rpc-quicknode-holesky.morphl2.io',
-    blockExplorerUrl: 'https://explorer-holesky.morphl2.io'
+    id: 1328,
+    hexId: '0x530',
+    name: 'Sei Testnet',
+    icon: '/chains/sei.svg',
+    symbol: 'SEI',
+    rpcUrl: 'https://evm-rpc-testnet.sei-apis.com',
+    blockExplorerUrl: 'https://testnet.seistream.app'
   }
 ]
 

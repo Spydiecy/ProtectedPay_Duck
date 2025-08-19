@@ -1,15 +1,15 @@
 import { ethers } from 'ethers';
 import { isValidAddress } from './address';
 
-const MAIN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_MORPH_MAIN_CONTRACT || '0x151D3c8E531d9726148FF64D5e8426C03D0e91eF';
-const TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_MORPH_TOKEN_CONTRACT || '0x0';
+const MAIN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_SEI_MAIN_CONTRACT || '0x6bDda54ee2Fb802aC85E88B2cBE4B93767Ef8D1e';
+const TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_SEI_TOKEN_CONTRACT || '0x0';
 
 const CONTRACT_ADDRESSES = {
-  2810: MAIN_CONTRACT_ADDRESS, // Morph Holesky Testnet
+  1328: MAIN_CONTRACT_ADDRESS, // Sei Testnet
 } as const;
 
 const TOKEN_CONTRACT_ADDRESSES = {
-  2810: TOKEN_CONTRACT_ADDRESS, // Morph Holesky Testnet
+  1328: TOKEN_CONTRACT_ADDRESS, // Sei Testnet
 } as const;
 
 const TOKEN_CONTRACT_ABI =  [
@@ -1853,7 +1853,7 @@ interface TransferEvent {
   // Gets the appropriate contract address based on chainId
   const getContractAddress = async (signer: ethers.Signer) => {
 	const chainId = await signer.getChainId();
-	return CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES] || CONTRACT_ADDRESSES[2810]; // Default to Morph Holesky Testnet
+	return CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES] || CONTRACT_ADDRESSES[1328]; // Default to Sei Testnet
   };
   
   // Contract instance getter with chain awareness
@@ -2301,16 +2301,16 @@ userAddress: string
   
   export const getChainNativeCurrency = (chainId: number) => {
 	switch (chainId) {
-	  case 42069:
+	  case 1328:
 		return {
-		  name: 'ETH',
-		  symbol: 'ETH',
+		  name: 'SEI',
+		  symbol: 'SEI',
 		  decimals: 18
 		};
 	  default:
 		return {
-		  name: 'ETH',
-		  symbol: 'ETH',
+		  name: 'SEI',
+		  symbol: 'SEI',
 		  decimals: 18
 		};
 	}
@@ -2318,10 +2318,10 @@ userAddress: string
   
   export const getExplorerUrl = (chainId: number) => {
 	switch (chainId) {
-	  case 42069:
-		return 'https://devnet.explorer.moved.network';
+	  case 1328:
+		return 'https://testnet.seistream.app';
 	  default:
-		return 'https://devnet.explorer.moved.network';
+		return 'https://testnet.seistream.app';
 	}
   };
   
@@ -2361,7 +2361,7 @@ userAddress: string
 		return 'Transaction was rejected by user';
 	  }
 	  if (error.message.includes('insufficient funds')) {
-		return `Insufficient ${getChainNativeCurrency(chainId || 12227332).symbol} for transaction`;
+		return `Insufficient ${getChainNativeCurrency(chainId || 1328).symbol} for transaction`;
 	  }
 	  return error.message;
 	}
@@ -2372,7 +2372,7 @@ userAddress: string
 // Token Contract Functions
 const getTokenContractAddress = async (signer: ethers.Signer) => {
   const chainId = await signer.getChainId();
-  return TOKEN_CONTRACT_ADDRESSES[chainId as keyof typeof TOKEN_CONTRACT_ADDRESSES] || TOKEN_CONTRACT_ADDRESSES[2810]; // Default to Morph Holesky Testnet
+  return TOKEN_CONTRACT_ADDRESSES[chainId as keyof typeof TOKEN_CONTRACT_ADDRESSES] || TOKEN_CONTRACT_ADDRESSES[1328]; // Default to Sei Testnet
 };
 
 // Token contract instance getter with chain awareness
@@ -2383,7 +2383,7 @@ export const getTokenContract = async (signer: ethers.Signer) => {
 
 // Helper function to parse token amount with correct decimals
 const parseTokenAmount = (amount: string, tokenAddress: string): ethers.BigNumber => {
-  // Check if it's a specific token (custom logic for Morph only)
+  // Check if it's a specific token (custom logic for Sei only)
   // if (tokenAddress.toLowerCase() === 'SPECIFIC_TOKEN_ADDRESS'.toLowerCase()) {
   //   return ethers.utils.parseUnits(amount, 6);
   // }
@@ -2606,7 +2606,7 @@ export const getTokenAllowance = async (
 	return ethers.constants.MaxUint256.toString();
   }
   
-  // Morph: All tokens use standard ERC20 allowance logic
+  // Sei: All tokens use standard ERC20 allowance logic
   
   // For other ERC20 tokens, use standard ERC20 interface
   const erc20Contract = new ethers.Contract(tokenAddress, [

@@ -3,9 +3,9 @@
 <div align="center">
   <img src="https://github.com/user-attachments/assets/eb3dbd55-6522-4d3b-b6f9-6ec63157e565" alt="ProtectedPay Logo" width="650px">
   
-  <h3>Smart. Secure Crypto Transfers on Morph Network</h3>
+  <h3>Smart. Secure Crypto Transfers on Sei Network</h3>
   
-  <p>A revolutionary DeFi platform for secure transfers, group payments, and smart savings, built for Morph Holesky Testnet with native ETH support.</p>
+  <p>A revolutionary DeFi platform for secure transfers, group payments, and smart savings, built for Sei Testnet with native SEI support.</p>
 </div>
 
 ## 📋 Contents
@@ -25,13 +25,13 @@
 
 <img align="right" src="https://github.com/user-attachments/assets/5346495d-1fd2-4735-bd29-a96a8ad27d99" width="350px">
 
-- **Natural Language Commands**: Send transfers using plain English - "Send 10 ETH to alice"
+- **Natural Language Commands**: Send transfers using plain English - "Send 10 SEI to alice"
 - **Voice Input Support**: Use your microphone for hands-free interaction
-- **Smart Balance Queries**: Check balances with simple commands like "What's my ETH balance?"
+- **Smart Balance Queries**: Check balances with simple commands like "What's my SEI balance?"
 - **Transaction Management**: Claim, refund, and view transfers through AI chat
 - **Real-time Assistance**: Get instant help with wallet operations and blockchain interactions
 - **Context-Aware**: AI remembers your conversation for better assistance
-- **Morph Network**: Works seamlessly on the high-performance Morph Holesky testnet
+- **Sei Network**: Works seamlessly on the high-performance Sei testnet
 
 <br clear="right"/>
 
@@ -45,8 +45,8 @@
 - **Customizable Remarks**: Add notes to help identify your transfers
 - **QR Integration**: Scan to pay functionality for quick transfers
 - **Transaction Privacy**: Keep your transfer details confidential
-- **Morph Speed**: Benefit from Morph Holesky Testnet's fast transaction finality and low fees
-- **Native ETH Support**: Full support for Ethereum's native token
+- **Sei Speed**: Benefit from Sei Testnet's fast transaction finality and low fees
+- **Native SEI Support**: Full support for Sei's native token
 
 <br clear="right"/>
 
@@ -55,7 +55,7 @@
 <img align="right" src="https://github.com/user-attachments/assets/35f41b07-3fec-4526-846a-2bc963cd6777" width="350px">
 
 - **Split Expenses Easily**: Divide costs among friends or colleagues
-- **Simple Contributors**: Accept payments from any Morph user
+- **Simple Contributors**: Accept payments from any Sei user
 - **Automatic Distribution**: Funds released when target amount is reached
 - **Real-Time Tracking**: Monitor contributions as they happen
 - **Transparent History**: View all group payment activity
@@ -68,11 +68,11 @@
 <img align="right" src="https://github.com/user-attachments/assets/0e14b1b2-6224-4a3f-a27d-b4a2a09254cb" width="350px">
 
 - **Goal-Based Savings**: Set targets and track progress visually
-- **Morph Optimized**: Create dedicated savings on Morph Holesky Testnet
+- **Sei Optimized**: Create dedicated savings on Sei Testnet
 - **Flexible Contributions**: Add funds on your own schedule
 - **Emergency Access**: Withdraw when needed without penalties
 - **Purpose Tracking**: Organize savings by specific goals or needs
-- **Yield Earning**: Option to earn yield on your savings, increasing Morph TVL
+- **Yield Earning**: Option to earn yield on your savings, increasing Sei TVL
 - **Progress Visualization**: Watch your savings grow in real-time
 
 <br clear="right"/>
@@ -96,12 +96,12 @@
 
 ## 🔗 Supported Networks
 
-ProtectedPay is built for the Morph Holesky Testnet, with AI-powered assistance for seamless interactions. Currently optimized for testnet environments with plans for mainnet deployment.
+ProtectedPay is built for the Sei Testnet, with AI-powered assistance for seamless interactions. Currently optimized for testnet environments with plans for mainnet deployment.
 
 <div align="left">
   <table>
     <tr>
-      <td align="center"><img src="/public/chains/morph.png" width="70px"><br><b>Morph Holesky</b><br><small>Chain ID: 2810</small></td>
+      <td align="center"><img src="/public/chains/sei.svg" width="70px"><br><b>Sei Testnet</b><br><small>Chain ID: 1328</small></td>
     </tr>
   </table>
 </div>
@@ -115,13 +115,13 @@ ProtectedPay is built for the Morph Holesky Testnet, with AI-powered assistance 
 
 ### AI-Powered Interactions
 
-1. **Connect Your Wallet**: Connect your Morph compatible wallet to ProtectedPay
+1. **Connect Your Wallet**: Connect your Sei compatible wallet to ProtectedPay
 2. **Chat with AI**: Use natural language or voice commands to manage your crypto
 3. **Smart Execution**: AI understands your intent and executes blockchain transactions safely
 
 ### Protected Transfers in 3 Simple Steps
 
-1. **Use AI or Manual Entry**: Say "Send 10 ETH to alice" or use the traditional interface
+1. **Use AI or Manual Entry**: Say "Send 10 SEI to alice" or use the traditional interface
 2. **Confirm Transaction**: Review details before the AI executes the transfer
 3. **Secure Delivery**: Recipient claims funds when ready, or you can refund if needed
 
@@ -133,7 +133,7 @@ ProtectedPay is built for the Morph Holesky Testnet, with AI-powered assistance 
 
 ### Smart Savings Pots
 
-1. **Set Goals**: Set your savings target on Morph Holesky Testnet
+1. **Set Goals**: Set your savings target on Sei Testnet
 2. **Contribute**: Add funds at your own pace with real-time progress tracking
 3. **Yield Option**: Opt to earn yield on your savings, helping grow both your funds and network TVL
 4. **Flexible Access**: Withdraw partially or completely whenever needed
@@ -148,7 +148,7 @@ ProtectedPay is built for the Morph Holesky Testnet, with AI-powered assistance 
 ### Design Philosophy
 
 - **AI-First Approach**: Natural language and voice interactions for blockchain operations
-- **Morph Inspired**: UI themes designed to match Morph Holesky Testnet branding
+- **Sei Inspired**: UI themes designed to match Sei Testnet branding
 - **Glassmorphism**: Modern, clean aesthetics with depth and transparency
 - **Responsive Layout**: Perfect experience on any device
 - **Intuitive Navigation**: Easily access all features with minimal learning curve
@@ -161,17 +161,17 @@ ProtectedPay is built for the Morph Holesky Testnet, with AI-powered assistance 
 </div>
 
 - **Activity Feed**: Real-time updates of your transactions and AI interactions
-- **Asset Overview**: Quick view of your token balances on Morph Holesky Testnet
+- **Asset Overview**: Quick view of your token balances on Sei Testnet
 - **AI Chat Interface**: Integrated assistant for voice and text-based blockchain operations
 - **Status Indicators**: Clear visual cues for transaction states
-- **Network Selection**: Seamlessly interact with Morph Holesky Testnet
+- **Network Selection**: Seamlessly interact with Sei Testnet
 
 ## 🔒 Security
 
 ProtectedPay prioritizes security at every level:
 
 - **AI Safety**: Secure integration with Gemini AI that never accesses your private keys
-- **Smart Contract Safety**: Morph Holesky Testnet optimized contracts with rigorous security measures
+- **Smart Contract Safety**: Sei Testnet optimized contracts with rigorous security measures
 - **Non-Custodial Architecture**: Users always maintain control of their funds
 - **Protected Transfers**: Built-in escrow functionality keeps funds secure
 - **Voice Privacy**: Speech recognition happens locally in your browser
@@ -191,14 +191,14 @@ ProtectedPay prioritizes security at every level:
     </tr>
     <tr>
       <td>Native Transfers</td>
-      <td><img src="/public/chains/morph.png" width="20"> Morph Holesky</td>
-      <td><code>0x151D3c8E531d9726148FF64D5e8426C03D0e91eF</code></td>
-      <td>🔄 Pending</td>
+      <td><img src="/public/chains/sei.svg" width="20"> Sei Testnet</td>
+      <td><code>0x6bDda54ee2Fb802aC85E88B2cBE4B93767Ef8D1e</code></td>
+      <td>✅ Active</td>
     </tr>
     <tr>
       <td>Token Transfers</td>
-      <td><img src="/public/chains/morph.png" width="20"> Morph Holesky</td>
-      <td><code>TBD - Coming Soon</code></td>
+      <td><img src="/public/chains/sei.svg" width="20"> Sei Testnet</td>
+      <td><code>0x0</code></td>
       <td>🔄 Pending</td>
     </tr>
   </table>
@@ -214,5 +214,5 @@ Need assistance or have questions? We're here to help:
 
 <div align="center">
   <p>© 2025 ProtectedPay</p>
-  <h3>Revolutionizing secure payments with AI on Morph Holesky Testnet</h3>
+  <h3>Revolutionizing secure payments with AI on Sei Testnet</h3>
 </div>

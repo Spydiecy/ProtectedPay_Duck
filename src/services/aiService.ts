@@ -623,7 +623,7 @@ export class ProtectedPayAIService {
 
     // Parse token filters
     const tokenPatterns = [
-      { pattern: /\b(eth|ethereum)\b/i, token: 'ETH' },
+      { pattern: /\b(sei|sei token)\b/i, token: 'SEI' },
       { pattern: /\b(usdc|usd-c)\b/i, token: 'USDC' },
       { pattern: /\b(usdt|tether)\b/i, token: 'USDT' }
     ]

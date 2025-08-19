@@ -211,7 +211,7 @@ export default function TransferPage() {
             console.log(`Token transfer details for ${id}:`, details)
             
             // Determine if this is actually a native token transfer
-                                   // Check for native token transfers on Morph only
+                                   // Check for native token transfers on Sei only
             const isActuallyNative = (details.token === 'NATIVE' || 
                                    details.token === '0x0000000000000000000000000000000000000000' ||
                                    !details.token)
@@ -896,7 +896,7 @@ export default function TransferPage() {
                         <ShieldCheckIcon className="w-12 h-12 text-[rgb(var(--primary))]" />
                         <p className="text-[rgb(var(--foreground))] font-medium mt-4">No Pending Transfers</p>
                         <p className="text-sm text-[rgb(var(--muted-foreground))] mt-2">
-                          You don't have any pending transfers to claim or refund on Morph Holesky
+                          You don't have any pending transfers to claim or refund on Sei
                         </p>
                         <button
                           onClick={() => fetchRecentActivity()}

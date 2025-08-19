@@ -162,7 +162,13 @@ const Hero = () => {
           animate="animate"
         >
           <div className="bg-white/30 dark:bg-black/30 p-4 md:p-8 rounded-3xl backdrop-blur-xl border border-gray-200 dark:border-green-500/20 hover:border-green-500/40 transition-all duration-500 shadow-sm">
-            <ShieldCheckIcon className="w-16 h-16 md:w-24 md:h-24 text-green-500 dark:text-green-400" />
+            <Image
+              src="/logo.png"
+              alt="ProtectedPay Logo"
+              width={100}
+              height={100}
+              className="w-24 h-24 md:w-32 md:h-32 mx-auto"
+            />
           </div>
         </motion.div>
 
@@ -320,12 +326,12 @@ const NetworkShowcase = () => {
             whileInView="animate"
             viewport={{ once: true }}
           >
-            Experience the future of DeFi with lightning-fast transactions, minimal fees, and EVM compatibility on the Morph Network ecosystem
+            Experience the future of DeFi with lightning-fast transactions, minimal fees, and EVM compatibility on the Sei Network ecosystem
           </motion.p>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* Morph Network Card */}
+          {/* Sei Network Card */}
           <motion.div 
             className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 dark:from-green-400/10 dark:to-emerald-400/10 border border-green-500/20 dark:border-green-400/20 rounded-3xl p-6 backdrop-blur-sm shadow-xl"
             variants={fadeIn}
@@ -339,26 +345,26 @@ const NetworkShowcase = () => {
               <div className="w-20 h-20 relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-full blur-xl"></div>
                 <Image
-                  src="/chains/morph.png"
-                  alt="Morph Network"
+                  src="/chains/sei.svg"
+                  alt="Sei Network"
                   width={80}
                   height={80}
                   className="relative z-10 transition-all duration-300 hover:scale-110 drop-shadow-lg"
                 />
               </div>
               <div className="space-y-3">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Morph Holesky</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Sei Testnet</h3>
                 <div className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium">
                   <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                   High-Performance Blockchain
                 </div>
                 <div className="bg-black/5 dark:bg-white/5 rounded-lg p-2">
                   <div className="text-gray-500 dark:text-gray-400 mb-1">Chain ID</div>
-                  <div className="font-mono font-semibold text-green-600 dark:text-green-400">2810</div>
+                  <div className="font-mono font-semibold text-green-600 dark:text-green-400">1328</div>
                 </div>
                 <div className="bg-black/5 dark:bg-white/5 rounded-lg p-2">
                   <div className="text-gray-500 dark:text-gray-400 mb-1">Native Currency</div>
-                  <div className="font-semibold text-green-600 dark:text-green-400">ETH</div>
+                  <div className="font-semibold text-green-600 dark:text-green-400">SEI</div>
                 </div>
               </div>
             </div>
@@ -375,7 +381,7 @@ const NetworkShowcase = () => {
             transition={{ type: "spring", stiffness: 300 }}
           >
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-center mb-6">Why Morph?</h3>
+              <h3 className="text-2xl font-bold text-center mb-6">Why Sei?</h3>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
@@ -436,12 +442,12 @@ const NetworkShowcase = () => {
           <div className="inline-flex items-center space-x-6 bg-white/50 dark:bg-gray-900/50 rounded-full px-8 py-4 backdrop-blur-sm border border-green-500/20">
             <div className="text-sm">
               <span className="text-gray-600 dark:text-gray-400">RPC:</span>
-              <span className="ml-2 font-mono text-green-600 dark:text-green-400">rpc-quicknode-holesky.morphl2.io</span>
+              <span className="ml-2 font-mono text-green-600 dark:text-green-400">evm-rpc-testnet.sei-apis.com</span>
             </div>
             <div className="w-px h-6 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-sm">
               <span className="text-gray-600 dark:text-gray-400">Explorer:</span>
-              <span className="ml-2 font-mono text-green-600 dark:text-green-400">explorer-holesky.morphl2.io</span>
+              <span className="ml-2 font-mono text-green-600 dark:text-green-400">testnet.seistream.app</span>
             </div>
           </div>
         </motion.div>

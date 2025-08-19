@@ -438,13 +438,13 @@ const getStarterTips = (type: string): string => {
       return `
         • Say "Create group payment for Alice with 5 people for 100 ETH"<br>
         • Or try "Make a group payment for dinner - 50 ETH for 4 friends"<br>
-        • Split costs easily and track contributions in real-time on Morph Holesky Testnet
+        • Split costs easily and track contributions in real-time on Sei Testnet
       `
     case 'savings_pots':
       return `
         • Say "Create savings pot 'Vacation' with target 1000 ETH"<br>
         • Or try "Make a savings goal for new laptop - 500 ETH"<br>
-        • Set goals and track your progress automatically on Morph Holesky Testnet
+        • Set goals and track your progress automatically on Sei Testnet
       `
     default:
       return `

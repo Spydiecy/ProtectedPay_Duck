@@ -22,33 +22,33 @@ type ExtendedProvider = ethers.providers.ExternalProvider & {
 };
 
 // Define chains
-const morphHoleskyNetwork = {
-  id: 2810,
-  name: 'Morph Holesky',
-  network: 'morph-holesky',
+const seiTestnetNetwork = {
+  id: 1328,
+  name: 'Sei Testnet',
+  network: 'sei-testnet',
   nativeCurrency: {
     decimals: 18,
-    name: 'ETH',
-    symbol: 'ETH',
+    name: 'SEI',
+    symbol: 'SEI',
   },
   rpcUrls: {
     public: {
-      http: ['https://rpc-quicknode-holesky.morphl2.io']
+      http: ['https://evm-rpc-testnet.sei-apis.com']
     },
     default: {
-      http: ['https://rpc-quicknode-holesky.morphl2.io']
+      http: ['https://evm-rpc-testnet.sei-apis.com']
     },
   },
   blockExplorers: {
     default: {
-      name: 'Morph Explorer',
-      url: 'https://explorer-holesky.morphl2.io'
+      name: 'Sei Explorer',
+      url: 'https://testnet.seistream.app'
     },
   },
   testnet: true,
 } as const;
 
-const chains = [morphHoleskyNetwork] as const;
+const chains = [seiTestnetNetwork] as const;
 
 const projectId = 'b8ad206ba9492e6096fa0aa0f868586c';
 
@@ -68,7 +68,7 @@ const wagmiConfig = createConfig({
   connectors,
   chains,
   transports: {
-    [morphHoleskyNetwork.id]: http(),
+    [seiTestnetNetwork.id]: http(),
   },
 });
 

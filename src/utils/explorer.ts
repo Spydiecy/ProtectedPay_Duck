@@ -2,10 +2,10 @@
 
 export const getExplorerUrl = (chainId: number): string => {
   switch (chainId) {
-    case 2810: // Morph Holesky Testnet
-      return 'https://explorer-holesky.morphl2.io'
+    case 1328: // Sei Testnet
+      return 'https://testnet.seistream.app'
     default:
-      return 'https://explorer-holesky.morphl2.io' // Morph Holesky Testnet
+      return 'https://testnet.seistream.app' // Sei Testnet
   }
 }
 
@@ -21,7 +21,7 @@ export const getAddressUrl = (address: string, chainId: number): string => {
 
 export const getChainName = (chainId: number): string => {
   switch (chainId) {
-    case 2810: return 'Morph Holesky'
+    case 1328: return 'Sei Testnet'
     default: return `Chain ${chainId}`
   }
 }

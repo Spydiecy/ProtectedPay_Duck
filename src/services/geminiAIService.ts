@@ -103,13 +103,13 @@ export class GeminiProtectedPayService {
       const recentTokenMention = this.conversationContext.messageHistory
         .slice(-3) // Look at last 3 messages
         .find(msg => msg.role === 'user' && 
-          msg.content.toLowerCase().match(/\b(eth|usdc|usdt|morph)\b/i))
+          msg.content.toLowerCase().match(/\b(sei|usdc|usdt|sei token)\b/i))
       
       let contextualPrompt = ''
       if (lastResponse && lastResponse.content.includes('Balance:')) {
         // Previous message was a balance response, check if this is asking for different token or all tokens
         const tokenPatterns = [
-          /\b(eth|ethereum|ETH|in\s+eth)\b/i,
+          /\b(sei|sei token|SEI|in\s+sei)\b/i,
           /\b(usdc|usd-c|USDC|in\s+usdc)\b/i,
           /\b(usdt|usd-t|USDT|in\s+usdt)\b/i
         ]
@@ -164,11 +164,11 @@ AVAILABLE ACTIONS:
 TRANSACTION FILTERING OPTIONS:
 - By Status: "show refunded transactions", "pending transfers", "completed payments"
 - By Direction: "sent transactions", "received transfers", "outgoing payments"  
-- By Token: "ETH transactions", "USDC transfers", "USDT payments"
-- Combined: "show my refunded ETH transfers", "pending USDC transactions"
+- By Token: "SEI transactions", "USDC transfers", "USDT payments"
+- Combined: "show my refunded SEI transfers", "pending USDC transactions"
 
 SUPPORTED CHAINS:
-- Morph Holesky Testnet (Chain ID: 2810)
+- Sei Testnet (Chain ID: 1328)
 
 CURRENT CONTEXT:
 - User Address: ${address || 'Not connected'}
@@ -199,7 +199,7 @@ Provide a helpful response and if action is needed, specify the action type and 
 
 Examples:
 - "Check my balance" → ACTION: balance check (execute immediately)
-- "Send 100 ETH to 0x123..." → ACTION: send transfer (ask for confirmation)
+- "Send 100 SEI to 0x123..." → ACTION: send transfer (ask for confirmation)
 - "Register username alice" → ACTION: register username (ask for confirmation)
 - "What chains are supported?" → ACTION: chain info (execute immediately)
 - "Show pending transfers" → ACTION: view transfers (execute immediately)`
@@ -291,29 +291,29 @@ Examples:
     const isFollowUpBalanceQuery = lastResponse && lastResponse.content.includes('Balance:') && 
       (userLower.includes('for all') || userLower.includes('all tokens') || 
        userLower.includes('all balances') || userLower.includes('show all') ||
-       userLower.match(/^\s*(eth|usdc|usdt|morph)\s*$/i) ||
-       userLower.match(/\b(in|for)\s+(eth|usdc|usdt|morph)\b/i) ||
-       userLower.match(/^(for|in)\s+(eth|usdc|usdt|morph)$/i))
+       userLower.match(/^\s*(sei|usdc|usdt|sei token)\s*$/i) ||
+       userLower.match(/\b(in|for)\s+(sei|usdc|usdt|sei token)\b/i) ||
+       userLower.match(/^(for|in)\s+(sei|usdc|usdt|sei token)$/i))
     
     // Also check if user mentioned a token and then said "balance"
     const recentTokenMention = this.conversationContext.messageHistory
       .slice(-3) // Look at last 3 messages
       .find(msg => msg.role === 'user' && 
-        msg.content.toLowerCase().match(/\b(eth|usdc|usdt|morph)\b/i))
+        msg.content.toLowerCase().match(/\b(sei|usdc|usdt|sei token)\b/i))
     
     const isTokenBalanceFollowUp = recentTokenMention && userLower.includes('balance') && 
-      !userLower.match(/\b(eth|usdc|usdt|morph)\b/i)
+      !userLower.match(/\b(sei|usdc|usdt|sei token)\b/i)
     
     // Balance check patterns - improved to detect specific tokens and follow-up queries
     if (userLower.includes('balance') || userLower.includes('how much') || 
-        userLower.match(/\b(in|my)\s+(eth|usdc|usdt|morph)\b/i) ||
-        userLower.match(/^\s*(eth|usdc|usdt|morph)\s*$/i) ||
+        userLower.match(/\b(in|my)\s+(sei|usdc|usdt|sei token)\b/i) ||
+        userLower.match(/^\s*(sei|usdc|usdt|sei token)\s*$/i) ||
         userLower.includes('for all') || userLower.includes('all tokens') || 
         userLower.includes('all balances') || userLower.includes('show all') ||
         isFollowUpBalanceQuery || isTokenBalanceFollowUp) {
       
       const addressMatch = userMessage.match(/0x[a-fA-F0-9]{40}/)
-      const chainMatch = userMessage.match(/chain\s+(\d+)|on\s+(\d+)|testnet|mainnet|morph/)
+      const chainMatch = userMessage.match(/chain\s+(\d+)|on\s+(\d+)|testnet|mainnet|sei/)
       
       // Extract specific token mentions - improved pattern matching including follow-up queries
       const tokenPatterns = [
@@ -875,10 +875,10 @@ Examples:
         
       case 'chain_info':
         return {
-          message: `⛓️ **Supported Chains:**\n• Morph Holesky Testnet (ID: 2810)`,
+          message: `⛓️ **Supported Chains:**\n• Sei Testnet (ID: 1328)`,
           data: {
             chains: [
-              { name: 'Morph Holesky Testnet', id: 2810 }
+              { name: 'Sei Testnet', id: 1328 }
             ]
           }
         }
@@ -1641,7 +1641,7 @@ Examples:
 
   private getChainName(chainId?: number): string {
     switch (chainId) {
-      case 2810: return 'Morph Holesky'
+      case 1328: return 'Sei Testnet'
       default: return 'Unknown Chain'
     }
   }
