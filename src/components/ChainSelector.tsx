@@ -21,7 +21,7 @@ const SUPPORTED_CHAINS = [
     name: 'BNB Smart Chain Testnet',
     icon: '/chains/bnb.svg',
     symbol: 'tBNB',
-    rpcUrl: 'https://bsc-testnet-rpc.publicnode.com',
+    rpcUrl: 'https://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb',
     blockExplorerUrl: 'https://testnet.bscscan.com'
   }
 ] as const;
@@ -33,7 +33,7 @@ export const supportedChains: ChainInfo[] = [
     name: 'BNB Smart Chain Testnet',
     icon: '/chains/bnb.svg',
     symbol: 'tBNB',
-    rpcUrl: 'https://bsc-testnet-rpc.publicnode.com',
+    rpcUrl: 'https://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb',
     blockExplorerUrl: 'https://testnet.bscscan.com'
   }
 ]

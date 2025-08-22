@@ -12,7 +12,9 @@ import {
   UserCircleIcon,
   ExclamationCircleIcon,
   ArrowUturnLeftIcon,
-  CheckIcon
+  CheckIcon,
+  ShareIcon,
+  ClipboardIcon
 } from '@heroicons/react/24/outline'
 import { useAccount } from 'wagmi'
 import { ethers } from 'ethers'
@@ -70,6 +72,7 @@ export default function HistoryPage() {
   const [error, setError] = useState<string | null>(null)
   const [activeFilter, setActiveFilter] = useState<'all' | 'native' | 'token' | 'transfer' | 'group_payment' | 'savings_pot'>('all')
   const [currentPage, setCurrentPage] = useState(1)
+  const [copySuccess, setCopySuccess] = useState<string>('')
   const itemsPerPage = 5 // Show only 5 transactions per page
 
   // Fetch user data and transaction history
@@ -110,6 +113,14 @@ export default function HistoryPage() {
       if (transfersData && transfersData.length > 0) {
         const transferTransactions = transfersData.map((transfer: any) => {
           const isSender = transfer.sender && isValidAddress(transfer.sender) && transfer.sender.toLowerCase() === validatedAddress.toLowerCase();
+          
+          // Ensure we have valid address data, not demo data
+          const cleanOtherParty = isSender ? transfer.recipient : transfer.sender;
+          if (!isValidAddress(cleanOtherParty)) {
+            console.warn('Invalid otherParty address in transfer:', transfer);
+            return null;
+          }
+          
           return {
             id: transfer.id || `transfer-${Date.now()}-${Math.random()}`,
             type: 'transfer',
@@ -117,13 +128,13 @@ export default function HistoryPage() {
             timestamp: transfer.timestamp,
             amount: transfer.amount,
             status: transfer.status,
-            otherParty: isSender ? transfer.recipient : transfer.sender,
+            otherParty: cleanOtherParty,
             description: transfer.remarks,
             isNativeToken: true,
             token: 'NATIVE'
           } as TransactionItem;
-        });
-        allTransactions = [...allTransactions, ...transferTransactions];
+        }).filter(Boolean); // Remove null entries
+        allTransactions = [...allTransactions, ...transferTransactions.filter((tx): tx is TransactionItem => tx !== null)];
       }
       // ...existing code...
       if (tokenTransfersData && tokenTransfersData.length > 0) {
@@ -225,6 +236,87 @@ export default function HistoryPage() {
       setIsLoading(false);
     }
   }, [signer, address]);
+  
+  // Helper function to generate claim link
+  const generateClaimLink = useCallback((transaction: TransactionItem) => {
+    if (transaction.type !== 'transfer') return null;
+    
+    // Determine sender and receiver based on transaction direction
+    const isSent = transaction.subtype === 'sent';
+    const sender = isSent ? address : transaction.otherParty;
+    const receiver = isSent ? transaction.otherParty : address;
+    
+    // Debug logging to help identify the issue
+    console.log('Generating claim link for transaction:', {
+      transactionId: transaction.id,
+      isSent,
+      currentAddress: address,
+      otherParty: transaction.otherParty,
+      calculatedSender: sender,
+      calculatedReceiver: receiver,
+      amount: transaction.amount
+    });
+    
+    // Validate that we have real addresses (not demo data)
+    if (!sender || !receiver || 
+        !isValidAddress(sender) || !isValidAddress(receiver) ||
+        sender.includes('demo') || receiver.includes('demo') ||
+        sender.includes('transfer') || receiver.includes('transfer')) {
+      console.error('Invalid addresses for claim link:', { sender, receiver });
+      return null;
+    }
+    
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    const claimUrl = `${baseUrl}/claim/${sender}/${receiver}/${transaction.amount}`;
+    console.log('Generated claim URL:', claimUrl);
+    return claimUrl;
+  }, [address]);
+
+  // Copy link to clipboard
+  const copyClaimLink = useCallback(async (transaction: TransactionItem) => {
+    const link = generateClaimLink(transaction);
+    if (!link) return;
+
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopySuccess(transaction.id);
+      setTimeout(() => setCopySuccess(''), 2000);
+    } catch (err) {
+      console.error('Failed to copy link:', err);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = link;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopySuccess(transaction.id);
+      setTimeout(() => setCopySuccess(''), 2000);
+    }
+  }, [generateClaimLink]);
+
+  // Share link using Web Share API or fallback to copy
+  const shareClaimLink = useCallback(async (transaction: TransactionItem) => {
+    const link = generateClaimLink(transaction);
+    if (!link) return;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'ProtectedPay Transfer Claim',
+          text: `You have received ${transaction.amount} tBNB on ProtectedPay!`,
+          url: link,
+        });
+      } else {
+        // Fallback to copy
+        await copyClaimLink(transaction);
+      }
+    } catch (err) {
+      console.error('Error sharing:', err);
+      // Fallback to copy if share fails
+      await copyClaimLink(transaction);
+    }
+  }, [generateClaimLink, copyClaimLink]);
   
   // Fetch data when signer/address changes
   useEffect(() => {
@@ -617,19 +709,52 @@ export default function HistoryPage() {
                         </div>
                       </div>
                       
-                      <div className="text-right">
-                        <p className="font-medium text-[rgb(var(--foreground))]">
-                          {transaction.amount} {transaction.type === 'transfer' && transaction.token 
-                            ? getTokenSymbol(transaction.token) 
-                            : nativeToken}
-                        </p>
+                      <div className="flex flex-col items-end space-y-2">
+                        <div className="text-right">
+                          <p className="font-medium text-[rgb(var(--foreground))]">
+                            {transaction.amount} {transaction.type === 'transfer' && transaction.token 
+                              ? getTokenSymbol(transaction.token) 
+                              : nativeToken}
+                          </p>
+                          
+                          <p className="text-xs text-[rgb(var(--muted-foreground))] mt-1">
+                            {transaction.type === 'transfer' ? 
+                              (transaction.isNativeToken ? 'Native Transfer' : 'Token Transfer') : 
+                             transaction.type === 'group_payment' ? 'Group Payment' : 
+                             'Savings Pot'}
+                          </p>
+                        </div>
                         
-                        <p className="text-xs text-[rgb(var(--muted-foreground))] mt-1">
-                          {transaction.type === 'transfer' ? 
-                            (transaction.isNativeToken ? 'Native Transfer' : 'Token Transfer') : 
-                           transaction.type === 'group_payment' ? 'Group Payment' : 
-                           'Savings Pot'}
-                        </p>
+                        {/* Share/Copy buttons for sent transfers */}
+                        {transaction.type === 'transfer' && transaction.subtype === 'sent' && (
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={() => shareClaimLink(transaction)}
+                              className="flex items-center space-x-1 px-2 py-1 text-xs bg-green-500/10 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-500/20 transition-colors"
+                              title="Share claim link"
+                            >
+                              <ShareIcon className="w-3 h-3" />
+                              <span>Share</span>
+                            </button>
+                            <button
+                              onClick={() => copyClaimLink(transaction)}
+                              className="flex items-center space-x-1 px-2 py-1 text-xs bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-500/20 transition-colors"
+                              title="Copy claim link"
+                            >
+                              {copySuccess === transaction.id ? (
+                                <>
+                                  <CheckIcon className="w-3 h-3" />
+                                  <span>Copied!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <ClipboardIcon className="w-3 h-3" />
+                                  <span>Copy</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </motion.div>

@@ -5,7 +5,7 @@ from google.adk.agents import Agent
 from typing import Optional
 
 # BNB Smart Chain Testnet configuration
-BNB_TESTNET_RPC = "https://bsc-testnet-rpc.publicnode.com"
+BNB_TESTNET_RPC = "hhttps://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb"
 
 # ProtectedPay contract address (testnet only)
 PROTECTEDPAY_CONTRACT_ADDRESS = "0xCa36dD890F987EDcE1D6D7C74Fb9df627c216BF6"

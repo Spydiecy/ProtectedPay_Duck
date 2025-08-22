@@ -33,10 +33,10 @@ const bnbTestnetNetwork = {
   },
   rpcUrls: {
     public: {
-      http: ['https://bsc-testnet-rpc.publicnode.com']
+      http: ['https://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb']
     },
     default: {
-      http: ['https://bsc-testnet-rpc.publicnode.com']
+      http: ['https://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb']
     },
   },
   blockExplorers: {
