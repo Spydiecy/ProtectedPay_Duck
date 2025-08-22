@@ -1,4 +1,5 @@
 import requests
+import time
 from web3 import Web3
 from google.adk.agents import Agent
 from typing import Optional
@@ -1565,10 +1566,15 @@ def send_to_address(recipient_address: str, amount_bnb: str, remarks: str, sende
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully sent {amount_bnb} BNB to {recipient_address} with message '{remarks}' on testnet"
+            # Generate a display ID for the newly created transfer
+            transfer_id = f"new_tx_{tx_result['transaction_hash'][2:8]}_{int(time.time())}"
+            
+            tx_result["report"] = f"Successfully sent {amount_bnb} BNB to {recipient_address} with message '{remarks}' on testnet. Transaction ID: {transfer_id}"
+            tx_result["display_transfer_id"] = transfer_id
             tx_result["amount_bnb"] = amount_bnb
             tx_result["recipient"] = recipient_address
             tx_result["remarks"] = remarks
+            tx_result["note"] = "Use get_user_transfers() to see the actual transfer ID for refunds/claims"
         
         return tx_result
     except Exception as e:
@@ -1620,10 +1626,15 @@ def send_to_username(username: str, amount_bnb: str, remarks: str, sender_addres
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully sent {amount_bnb} BNB to username '{username}' with message '{remarks}' on testnet"
+            # Generate a display ID for the newly created transfer
+            transfer_id = f"new_tx_{tx_result['transaction_hash'][2:8]}_{int(time.time())}"
+            
+            tx_result["report"] = f"Successfully sent {amount_bnb} BNB to username '{username}' with message '{remarks}' on testnet. Transaction ID: {transfer_id}"
+            tx_result["display_transfer_id"] = transfer_id
             tx_result["amount_bnb"] = amount_bnb
             tx_result["recipient_username"] = username
             tx_result["remarks"] = remarks
+            tx_result["note"] = "Use get_user_transfers() to see the actual transfer ID for refunds/claims"
         
         return tx_result
     except Exception as e:
@@ -1753,40 +1764,93 @@ def get_user_transfers(user_address: str, network: Optional[str] = None) -> dict
                 "error_message": f"Invalid address format: {user_address}"
             }
         
-        # Use testnet contract
-        transfers = contract.functions.getUserTransfers(user_address).call()
-        
-        if not transfers:
+        # First get the user profile to get the actual transfer IDs
+        try:
+            user_profile = contract.functions.getUserProfile(user_address).call()
+            transfer_ids = user_profile[1]  # transferIds is the second element
+            
+            if not transfer_ids:
+                return {
+                    "status": "success",
+                    "report": f"No transfers found for address {user_address} on testnet",
+                    "transfers": [],
+                    "network": "testnet",
+                    "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
+                }
+            
+            transfer_list = []
+            status_map = {0: "Pending", 1: "Completed", 2: "Cancelled"}
+            
+            # Get details for each transfer using the actual transfer IDs
+            for i, transfer_id_bytes in enumerate(transfer_ids):
+                try:
+                    # Get transfer details using the bytes32 transfer ID
+                    transfer_details = contract.functions.getTransferDetails(transfer_id_bytes).call()
+                    
+                    transfer_list.append({
+                        "transfer_id": transfer_id_bytes.hex(),  # Convert bytes32 to hex string for display
+                        "transfer_id_bytes": transfer_id_bytes,  # Keep original bytes32 for contract calls
+                        "transfer_index": i,
+                        "sender": transfer_details[0],
+                        "recipient": transfer_details[1], 
+                        "amount_wei": int(transfer_details[2]),
+                        "amount_bnb": float(w3.from_wei(transfer_details[2], 'ether')),
+                        "timestamp": int(transfer_details[3]),
+                        "status": status_map.get(transfer_details[4], "Unknown"),
+                        "remarks": transfer_details[5]
+                    })
+                except Exception as detail_error:
+                    print(f"Error getting details for transfer {i}: {detail_error}")
+                    continue
+            
             return {
                 "status": "success",
-                "report": f"No transfers found for address {user_address} on testnet",
-                "transfers": [],
+                "report": f"Found {len(transfer_list)} transfers for address {user_address} on testnet",
+                "transfers": transfer_list,
+                "count": len(transfer_list),
                 "network": "testnet",
                 "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
             }
-        
-        transfer_list = []
-        status_map = {0: "Pending", 1: "Completed", 2: "Cancelled"}
-        
-        for transfer in transfers:
-            transfer_list.append({
-                "sender": transfer[0],
-                "recipient": transfer[1], 
-                "amount_wei": transfer[2],
-                "amount_bnb": w3.from_wei(transfer[2], 'ether'),
-                "timestamp": transfer[3],
-                "status": status_map.get(transfer[4], "Unknown"),
-                "remarks": transfer[5]
-            })
-        
-        return {
-            "status": "success",
-            "report": f"Found {len(transfer_list)} transfers for address {user_address} on testnet",
-            "transfers": transfer_list,
-            "count": len(transfer_list),
-            "network": "testnet",
-            "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
-        }
+            
+        except Exception as profile_error:
+            # Fallback to old method if getUserProfile fails
+            print(f"getUserProfile failed: {profile_error}, falling back to getUserTransfers")
+            transfers = contract.functions.getUserTransfers(user_address).call()
+            
+            if not transfers:
+                return {
+                    "status": "success",
+                    "report": f"No transfers found for address {user_address} on testnet",
+                    "transfers": [],
+                    "network": "testnet",
+                    "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
+                }
+            
+            transfer_list = []
+            status_map = {0: "Pending", 1: "Completed", 2: "Cancelled"}
+            
+            for i, transfer in enumerate(transfers):
+                transfer_list.append({
+                    "transfer_id": f"fallback_{i}",  # Fallback ID
+                    "transfer_index": i,
+                    "sender": transfer[0],
+                    "recipient": transfer[1], 
+                    "amount_wei": int(transfer[2]),
+                    "amount_bnb": float(w3.from_wei(transfer[2], 'ether')),
+                    "timestamp": int(transfer[3]),
+                    "status": status_map.get(transfer[4], "Unknown"),
+                    "remarks": transfer[5]
+                })
+            
+            return {
+                "status": "success",
+                "report": f"Found {len(transfer_list)} transfers for address {user_address} on testnet (fallback method)",
+                "transfers": transfer_list,
+                "count": len(transfer_list),
+                "network": "testnet",
+                "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
+            }
+            
     except Exception as e:
         return {
             "status": "error", 
@@ -2189,11 +2253,11 @@ def get_multiple_balances(address: str) -> dict:
         }
 
 
-def claim_transfer_by_id(transfer_id: int, claimer_address: str) -> dict:
-    """Claim a transfer by its ID.
+def claim_transfer_by_id(transfer_id: str, claimer_address: str) -> dict:
+    """Claim a transfer by its ID (testnet only).
 
     Args:
-        transfer_id (int): The transfer ID to claim
+        transfer_id (str): The transfer ID to claim (hex string from get_user_transfers)
         claimer_address (str): The claimer's wallet address
 
     Returns:
@@ -2206,27 +2270,58 @@ def claim_transfer_by_id(transfer_id: int, claimer_address: str) -> dict:
                 "error_message": f"Invalid claimer address: {claimer_address}"
             }
         
-        return {
-            "status": "success",
-            "report": f"To claim transfer ID {transfer_id}, call contract function 'claimTransferById'",
-            "function": "claimTransferById",
-            "params": {
-                "_transferId": transfer_id
+        # Convert hex string back to bytes32 for the contract call
+        try:
+            if transfer_id.startswith('0x'):
+                transfer_id_bytes = bytes.fromhex(transfer_id[2:])
+            else:
+                transfer_id_bytes = bytes.fromhex(transfer_id)
+                
+            # Ensure it's exactly 32 bytes
+            if len(transfer_id_bytes) != 32:
+                return {
+                    "status": "error",
+                    "error_message": f"Invalid transfer ID format. Expected 32 bytes, got {len(transfer_id_bytes)}"
+                }
+        except ValueError as hex_error:
+            return {
+                "status": "error",
+                "error_message": f"Invalid transfer ID format: {hex_error}"
+            }
+        
+        # Execute the transaction on testnet
+        tx_result = execute_contract_transaction(
+            contract=contract,
+            function_name="claimTransferById", 
+            params={
+                "_transferId": transfer_id_bytes
             },
-            "from_address": claimer_address
-        }
+            value_wei=0,  # No value needed for claiming
+            network="testnet",
+            network_w3=w3
+        )
+        
+        if tx_result["status"] == "success":
+            tx_result["report"] = f"Successfully claimed transfer ID {transfer_id} for address {claimer_address} on testnet"
+            tx_result["transfer_id"] = transfer_id
+            tx_result["claimer_address"] = claimer_address
+        
+        return tx_result
     except Exception as e:
         return {
             "status": "error",
             "error_message": f"Error preparing claim transfer by ID: {str(e)}"
         }
 
-def claim_transfer_by_username(username: str, claimer_address: str) -> dict:
-    """Claim a transfer by username.
+def claim_transfer_by_username(sender_username: str, claimer_address: str) -> dict:
+    """Claim a pending transfer from a sender by their username (testnet only).
+    
+    This function finds a pending transfer from the sender with the specified username
+    and claims it for the claimer address.
 
     Args:
-        username (str): The username to claim transfers for
-        claimer_address (str): The claimer's wallet address
+        sender_username (str): The username of the sender who sent the transfer
+        claimer_address (str): The claimer's wallet address (recipient)
 
     Returns:
         dict: status and result or error msg.
@@ -2238,19 +2333,78 @@ def claim_transfer_by_username(username: str, claimer_address: str) -> dict:
                 "error_message": f"Invalid claimer address: {claimer_address}"
             }
         
-        return {
-            "status": "success",
-            "report": f"To claim transfers for username '{username}', call contract function 'claimTransferByUsername'",
-            "function": "claimTransferByUsername",
-            "params": {
-                "_username": username
+        # Execute the transaction on testnet
+        tx_result = execute_contract_transaction(
+            contract=contract,
+            function_name="claimTransferByUsername", 
+            params={
+                "_senderUsername": sender_username
             },
-            "from_address": claimer_address
-        }
+            value_wei=0,  # No value needed for claiming
+            network="testnet",
+            network_w3=w3
+        )
+        
+        if tx_result["status"] == "success":
+            tx_result["report"] = f"Successfully claimed pending transfer from sender username '{sender_username}' for address {claimer_address} on testnet"
+            tx_result["sender_username"] = sender_username
+            tx_result["claimer_address"] = claimer_address
+        
+        return tx_result
     except Exception as e:
         return {
             "status": "error",
             "error_message": f"Error preparing claim transfer by username: {str(e)}"
+        }
+
+def claim_transfer_by_address(sender_address: str, claimer_address: str) -> dict:
+    """Claim a pending transfer from a sender by their address (testnet only).
+    
+    This function finds a pending transfer from the sender with the specified address
+    and claims it for the claimer address.
+
+    Args:
+        sender_address (str): The address of the sender who sent the transfer
+        claimer_address (str): The claimer's wallet address (recipient)
+
+    Returns:
+        dict: status and result or error msg.
+    """
+    try:
+        if not w3.is_address(sender_address):
+            return {
+                "status": "error", 
+                "error_message": f"Invalid sender address: {sender_address}"
+            }
+        
+        if not w3.is_address(claimer_address):
+            return {
+                "status": "error",
+                "error_message": f"Invalid claimer address: {claimer_address}"
+            }
+        
+        # Execute the transaction on testnet
+        tx_result = execute_contract_transaction(
+            contract=contract,
+            function_name="claimTransferByAddress", 
+            params={
+                "_senderAddress": sender_address
+            },
+            value_wei=0,  # No value needed for claiming
+            network="testnet",
+            network_w3=w3
+        )
+        
+        if tx_result["status"] == "success":
+            tx_result["report"] = f"Successfully claimed pending transfer from sender address {sender_address} for address {claimer_address} on testnet"
+            tx_result["sender_address"] = sender_address
+            tx_result["claimer_address"] = claimer_address
+        
+        return tx_result
+    except Exception as e:
+        return {
+            "status": "error",
+            "error_message": f"Error preparing claim transfer by address: {str(e)}"
         }
 
 def contribute_to_group_payment(payment_id: str, contribution_bnb: str, contributor_address: str) -> dict:
@@ -2359,11 +2513,11 @@ def contribute_to_savings_pot(pot_id: str, contribution_bnb: str, contributor_ad
             "error_message": f"Error preparing savings pot contribution: {str(e)}"
         }
 
-def refund_transfer(transfer_id: int, sender_address: str) -> dict:
-    """Refund a transfer by its ID (only the sender can refund).
+def refund_transfer(transfer_id: str, sender_address: str) -> dict:
+    """Refund a transfer by its ID (testnet only). Only the original sender can refund.
 
     Args:
-        transfer_id (int): The transfer ID to refund
+        transfer_id (str): The transfer ID to refund (hex string from get_user_transfers)
         sender_address (str): The sender's wallet address (must be the original sender)
 
     Returns:
@@ -2376,15 +2530,43 @@ def refund_transfer(transfer_id: int, sender_address: str) -> dict:
                 "error_message": f"Invalid sender address: {sender_address}"
             }
         
-        return {
-            "status": "success",
-            "report": f"To refund transfer ID {transfer_id}, call contract function 'refundTransfer' (only original sender can refund)",
-            "function": "refundTransfer",
-            "params": {
-                "_transferId": transfer_id
+        # Convert hex string back to bytes32 for the contract call
+        try:
+            if transfer_id.startswith('0x'):
+                transfer_id_bytes = bytes.fromhex(transfer_id[2:])
+            else:
+                transfer_id_bytes = bytes.fromhex(transfer_id)
+                
+            # Ensure it's exactly 32 bytes
+            if len(transfer_id_bytes) != 32:
+                return {
+                    "status": "error",
+                    "error_message": f"Invalid transfer ID format. Expected 32 bytes, got {len(transfer_id_bytes)}"
+                }
+        except ValueError as hex_error:
+            return {
+                "status": "error",
+                "error_message": f"Invalid transfer ID format: {hex_error}"
+            }
+        
+        # Execute the transaction on testnet
+        tx_result = execute_contract_transaction(
+            contract=contract,
+            function_name="refundTransfer", 
+            params={
+                "_transferId": transfer_id_bytes
             },
-            "from_address": sender_address
-        }
+            value_wei=0,  # No value needed for refunding
+            network="testnet",
+            network_w3=w3
+        )
+        
+        if tx_result["status"] == "success":
+            tx_result["report"] = f"Successfully refunded transfer ID {transfer_id} for sender {sender_address} on testnet"
+            tx_result["transfer_id"] = transfer_id
+            tx_result["sender_address"] = sender_address
+        
+        return tx_result
     except Exception as e:
         return {
             "status": "error",
@@ -2451,6 +2633,7 @@ root_agent = Agent(
         create_savings_pot,
         claim_transfer_by_id,
         claim_transfer_by_username,
+        claim_transfer_by_address,
         contribute_to_group_payment,
         contribute_to_savings_pot,
         refund_transfer
