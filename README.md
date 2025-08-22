@@ -11,7 +11,7 @@
 ## 📋 Contents
 
 - [Features](#-features)
-- [Supported Networks](#-supported-networks)
+- [Supported Network](#-supported-network)
 - [How It Works](#-how-it-works)
 - [User Interface](#-user-interface)
 - [Security](#-security)
@@ -35,7 +35,7 @@
 
 <br clear="right"/>
 
-### 🛡️ Protected Transfers on Multi-Chain Networks
+### 🛡️ Protected Transfers on BNB Smart Chain
 
 <img align="right" src="https://github.com/user-attachments/assets/0bef280d-2ffd-4669-817a-ef8985831dc7" width="350px">
 
@@ -55,7 +55,7 @@
 <img align="right" src="https://github.com/user-attachments/assets/35f41b07-3fec-4526-846a-2bc963cd6777" width="350px">
 
 - **Split Expenses Easily**: Divide costs among friends or colleagues
-- **Simple Contributors**: Accept payments from any BNB Smart Chain user
+- **Simple Contributors**: Accept payments from any BNB Smart Chain Testnet user
 - **Automatic Distribution**: Funds released when target amount is reached
 - **Real-Time Tracking**: Monitor contributions as they happen
 - **Transparent History**: View all group payment activity
@@ -68,7 +68,7 @@
 <img align="right" src="https://github.com/user-attachments/assets/0e14b1b2-6224-4a3f-a27d-b4a2a09254cb" width="350px">
 
 - **Goal-Based Savings**: Set targets and track progress visually
-- **BNB Smart Chain Optimized**: Create dedicated savings on BNB Smart Chain Testnet
+- **BNB Smart Chain Testnet**: Create dedicated savings accounts on BSC testnet
 - **Flexible Contributions**: Add funds on your own schedule
 - **Emergency Access**: Withdraw when needed without penalties
 - **Purpose Tracking**: Organize savings by specific goals or needs
@@ -94,9 +94,9 @@
 
 <br clear="right"/>
 
-## 🔗 Supported Networks
+## 🔗 Supported Network
 
-ProtectedPay is built for the BNB Smart Chain Testnet, with AI-powered assistance for seamless interactions. Currently optimized for testnet environments with plans for mainnet deployment.
+ProtectedPay is built exclusively for the BNB Smart Chain Testnet, offering AI-powered assistance for seamless blockchain interactions on this high-performance network.
 
 <div align="left">
   <table>
@@ -164,7 +164,7 @@ ProtectedPay is built for the BNB Smart Chain Testnet, with AI-powered assistanc
 - **Asset Overview**: Quick view of your token balances on BNB Smart Chain Testnet
 - **AI Chat Interface**: Integrated assistant for voice and text-based blockchain operations
 - **Status Indicators**: Clear visual cues for transaction states
-- **Network Selection**: Seamlessly interact with BNB Smart Chain Testnet
+- **Network Selection**: Optimized for BNB Smart Chain Testnet operations
 
 ## 🔒 Security
 
