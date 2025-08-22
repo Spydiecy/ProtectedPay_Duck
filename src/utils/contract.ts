@@ -1,15 +1,15 @@
 import { ethers } from 'ethers';
 import { isValidAddress } from './address';
 
-const MAIN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_SEI_MAIN_CONTRACT || '0x6bDda54ee2Fb802aC85E88B2cBE4B93767Ef8D1e';
-const TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_SEI_TOKEN_CONTRACT || '0x0';
+const MAIN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_BNB_MAIN_CONTRACT || '0xCa36dD890F987EDcE1D6D7C74Fb9df627c216BF6';
+const TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_BNB_TOKEN_CONTRACT || '0x0';
 
 const CONTRACT_ADDRESSES = {
-  1328: MAIN_CONTRACT_ADDRESS, // Sei Testnet
+  97: MAIN_CONTRACT_ADDRESS, // BNB Smart Chain Testnet
 } as const;
 
 const TOKEN_CONTRACT_ADDRESSES = {
-  1328: TOKEN_CONTRACT_ADDRESS, // Sei Testnet
+  97: TOKEN_CONTRACT_ADDRESS, // BNB Smart Chain Testnet
 } as const;
 
 const TOKEN_CONTRACT_ABI =  [
@@ -1853,7 +1853,7 @@ interface TransferEvent {
   // Gets the appropriate contract address based on chainId
   const getContractAddress = async (signer: ethers.Signer) => {
 	const chainId = await signer.getChainId();
-	return CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES] || CONTRACT_ADDRESSES[1328]; // Default to Sei Testnet
+	return CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES] || CONTRACT_ADDRESSES[97]; // Default to BNB Smart Chain Testnet
   };
   
   // Contract instance getter with chain awareness
@@ -2301,16 +2301,16 @@ userAddress: string
   
   export const getChainNativeCurrency = (chainId: number) => {
 	switch (chainId) {
-	  case 1328:
+	  case 97:
 		return {
-		  name: 'SEI',
-		  symbol: 'SEI',
+		  name: 'tBNB',
+		  symbol: 'tBNB',
 		  decimals: 18
 		};
 	  default:
 		return {
-		  name: 'SEI',
-		  symbol: 'SEI',
+		  name: 'tBNB',
+		  symbol: 'tBNB',
 		  decimals: 18
 		};
 	}
@@ -2318,10 +2318,10 @@ userAddress: string
   
   export const getExplorerUrl = (chainId: number) => {
 	switch (chainId) {
-	  case 1328:
-		return 'https://testnet.seistream.app';
+	  case 97:
+		return 'https://testnet.bscscan.com';
 	  default:
-		return 'https://testnet.seistream.app';
+		return 'https://testnet.bscscan.com';
 	}
   };
   
@@ -2361,7 +2361,7 @@ userAddress: string
 		return 'Transaction was rejected by user';
 	  }
 	  if (error.message.includes('insufficient funds')) {
-		return `Insufficient ${getChainNativeCurrency(chainId || 1328).symbol} for transaction`;
+		return `Insufficient ${getChainNativeCurrency(chainId || 97).symbol} for transaction`;
 	  }
 	  return error.message;
 	}
@@ -2370,12 +2370,10 @@ userAddress: string
   };
 
 // Token Contract Functions
-const getTokenContractAddress = async (signer: ethers.Signer) => {
+  const getTokenContractAddress = async (signer: ethers.Signer) => {
   const chainId = await signer.getChainId();
-  return TOKEN_CONTRACT_ADDRESSES[chainId as keyof typeof TOKEN_CONTRACT_ADDRESSES] || TOKEN_CONTRACT_ADDRESSES[1328]; // Default to Sei Testnet
-};
-
-// Token contract instance getter with chain awareness
+  return TOKEN_CONTRACT_ADDRESSES[chainId as keyof typeof TOKEN_CONTRACT_ADDRESSES] || TOKEN_CONTRACT_ADDRESSES[97]; // Default to BNB Smart Chain Testnet
+};// Token contract instance getter with chain awareness
 export const getTokenContract = async (signer: ethers.Signer) => {
   const address = await getTokenContractAddress(signer);
   return new ethers.Contract(address, TOKEN_CONTRACT_ABI, signer);
@@ -2383,7 +2381,7 @@ export const getTokenContract = async (signer: ethers.Signer) => {
 
 // Helper function to parse token amount with correct decimals
 const parseTokenAmount = (amount: string, tokenAddress: string): ethers.BigNumber => {
-  // Check if it's a specific token (custom logic for Sei only)
+  // Check if it's a specific token (custom logic for BNB Smart Chain only)
   // if (tokenAddress.toLowerCase() === 'SPECIFIC_TOKEN_ADDRESS'.toLowerCase()) {
   //   return ethers.utils.parseUnits(amount, 6);
   // }
@@ -2606,7 +2604,7 @@ export const getTokenAllowance = async (
 	return ethers.constants.MaxUint256.toString();
   }
   
-  // Sei: All tokens use standard ERC20 allowance logic
+  // BNB Smart Chain: All tokens use standard ERC20 allowance logic
   
   // For other ERC20 tokens, use standard ERC20 interface
   const erc20Contract = new ethers.Contract(tokenAddress, [

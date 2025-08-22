@@ -16,25 +16,25 @@ export interface ChainInfo {
 
 const SUPPORTED_CHAINS = [
   {
-    id: 1328,
-    hexId: '0x530',
-    name: 'Sei Testnet',
-    icon: '/chains/sei.svg',
-    symbol: 'SEI',
-    rpcUrl: 'https://evm-rpc-testnet.sei-apis.com',
-    blockExplorerUrl: 'https://testnet.seistream.app'
+    id: 97,
+    hexId: '0x61',
+    name: 'BNB Smart Chain Testnet',
+    icon: '/chains/bnb.svg',
+    symbol: 'tBNB',
+    rpcUrl: 'https://bsc-testnet-rpc.publicnode.com',
+    blockExplorerUrl: 'https://testnet.bscscan.com'
   }
 ] as const;
 
 export const supportedChains: ChainInfo[] = [
   {
-    id: 1328,
-    hexId: '0x530',
-    name: 'Sei Testnet',
-    icon: '/chains/sei.svg',
-    symbol: 'SEI',
-    rpcUrl: 'https://evm-rpc-testnet.sei-apis.com',
-    blockExplorerUrl: 'https://testnet.seistream.app'
+    id: 97,
+    hexId: '0x61',
+    name: 'BNB Smart Chain Testnet',
+    icon: '/chains/bnb.svg',
+    symbol: 'tBNB',
+    rpcUrl: 'https://bsc-testnet-rpc.publicnode.com',
+    blockExplorerUrl: 'https://testnet.bscscan.com'
   }
 ]
 

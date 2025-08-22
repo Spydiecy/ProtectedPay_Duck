@@ -2,10 +2,10 @@
 
 export const getExplorerUrl = (chainId: number): string => {
   switch (chainId) {
-    case 1328: // Sei Testnet
-      return 'https://testnet.seistream.app'
+    case 97: // BNB Smart Chain Testnet
+      return 'https://testnet.bscscan.com'
     default:
-      return 'https://testnet.seistream.app' // Sei Testnet
+      return 'https://testnet.bscscan.com' // BNB Smart Chain Testnet
   }
 }
 
@@ -21,7 +21,7 @@ export const getAddressUrl = (address: string, chainId: number): string => {
 
 export const getChainName = (chainId: number): string => {
   switch (chainId) {
-    case 1328: return 'Sei Testnet'
+    case 97: return 'BNB Smart Chain Testnet'
     default: return `Chain ${chainId}`
   }
 }

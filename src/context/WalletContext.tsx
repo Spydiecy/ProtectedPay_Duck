@@ -22,33 +22,33 @@ type ExtendedProvider = ethers.providers.ExternalProvider & {
 };
 
 // Define chains
-const seiTestnetNetwork = {
-  id: 1328,
-  name: 'Sei Testnet',
-  network: 'sei-testnet',
+const bnbTestnetNetwork = {
+  id: 97,
+  name: 'BNB Smart Chain Testnet',
+  network: 'bsc-testnet',
   nativeCurrency: {
     decimals: 18,
-    name: 'SEI',
-    symbol: 'SEI',
+    name: 'tBNB',
+    symbol: 'tBNB',
   },
   rpcUrls: {
     public: {
-      http: ['https://evm-rpc-testnet.sei-apis.com']
+      http: ['https://bsc-testnet-rpc.publicnode.com']
     },
     default: {
-      http: ['https://evm-rpc-testnet.sei-apis.com']
+      http: ['https://bsc-testnet-rpc.publicnode.com']
     },
   },
   blockExplorers: {
     default: {
-      name: 'Sei Explorer',
-      url: 'https://testnet.seistream.app'
+      name: 'BSC Testnet Explorer',
+      url: 'https://testnet.bscscan.com'
     },
   },
   testnet: true,
 } as const;
 
-const chains = [seiTestnetNetwork] as const;
+const chains = [bnbTestnetNetwork] as const;
 
 const projectId = 'b8ad206ba9492e6096fa0aa0f868586c';
 
@@ -68,7 +68,7 @@ const wagmiConfig = createConfig({
   connectors,
   chains,
   transports: {
-    [seiTestnetNetwork.id]: http(),
+    [bnbTestnetNetwork.id]: http(),
   },
 });
 

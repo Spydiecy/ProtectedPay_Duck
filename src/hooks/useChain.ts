@@ -9,12 +9,12 @@ export interface ChainInfo {
 
 // Map of chain IDs to their native tokens
 const TOKEN_MAP: Record<number, string> = {
-  1328: "SEI", // Sei Testnet
+  97: "tBNB", // BNB Smart Chain Testnet
 };
 
 // Map of chain IDs to their names
 const CHAIN_NAME_MAP: Record<number, string> = {
-  1328: "Sei Testnet",
+  97: "BNB Smart Chain Testnet",
 };
 
 /**
@@ -24,8 +24,8 @@ export function useChain(): ChainInfo {
   // Use the wallet context directly
   const wallet = useWallet();  const [chainInfo, setChainInfo] = useState<ChainInfo>({
     chainId: undefined,
-    nativeToken: "SEI",
-    chainName: "Sei Testnet"
+    nativeToken: "tBNB",
+    chainName: "BNB Smart Chain Testnet"
   });
 
   useEffect(() => {
@@ -38,8 +38,8 @@ export function useChain(): ChainInfo {
           if (ethereum && ethereum.chainId) {
             const chainId = parseInt(ethereum.chainId, 16);            setChainInfo({
               chainId,
-              nativeToken: TOKEN_MAP[chainId] || "SEI",
-              chainName: CHAIN_NAME_MAP[chainId] || "Sei Testnet"
+              nativeToken: TOKEN_MAP[chainId] || "tBNB",
+              chainName: CHAIN_NAME_MAP[chainId] || "BNB Smart Chain Testnet"
             });
           }
         } catch (error) {
@@ -57,8 +57,8 @@ export function useChain(): ChainInfo {
       const handleChainChanged = (chainId: string) => {
         const id = parseInt(chainId, 16);        setChainInfo({
           chainId: id,
-          nativeToken: TOKEN_MAP[id] || "SEI",
-          chainName: CHAIN_NAME_MAP[id] || "Sei Testnet"
+          nativeToken: TOKEN_MAP[id] || "tBNB",
+          chainName: CHAIN_NAME_MAP[id] || "BNB Smart Chain Testnet"
         });
       };
 

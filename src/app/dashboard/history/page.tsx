@@ -75,7 +75,7 @@ export default function HistoryPage() {
   // Fetch user data and transaction history
   const fetchTransactionData = useCallback(async () => {
     if (!signer || !address || typeof address !== 'string' || address.trim() === '' || !isValidAddress(address)) {
-      setError('Invalid wallet address. Please connect a valid Sei wallet.');
+      setError('Invalid wallet address. Please connect a valid BNB Smart Chain wallet.');
       setIsLoading(false);
       setTransactions([]);
       return;

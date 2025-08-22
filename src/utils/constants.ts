@@ -35,14 +35,14 @@ export const SUPPORTED_TOKENS_BY_CHAIN: Record<number, Array<{
   logo: string;
   isNative: boolean;
 }>> = {
-  // Sei Testnet
-  1328: [
+  // BNB Smart Chain Testnet
+  97: [
     {
       address: 'NATIVE',
-      symbol: 'SEI',
-      name: 'SEI (Native)',
+      symbol: 'tBNB',
+      name: 'tBNB (Native)',
       decimals: 18,
-      logo: '/chains/sei.svg',
+      logo: '/chains/bnb.svg',
       isNative: true
     },
     {
@@ -64,12 +64,12 @@ export const SUPPORTED_TOKENS_BY_CHAIN: Record<number, Array<{
   ]
 } as const;
 
-// Legacy support - defaults to Sei Testnet tokens
-export const SUPPORTED_TOKENS = SUPPORTED_TOKENS_BY_CHAIN[1328];
+// Legacy support - defaults to BNB Smart Chain Testnet tokens
+export const SUPPORTED_TOKENS = SUPPORTED_TOKENS_BY_CHAIN[97];
 
 // Helper function to get supported tokens for a specific chain
 export const getSupportedTokensForChain = (chainId: number) => {
-  return SUPPORTED_TOKENS_BY_CHAIN[chainId] || SUPPORTED_TOKENS_BY_CHAIN[1328]; // Default to Sei Testnet
+  return SUPPORTED_TOKENS_BY_CHAIN[chainId] || SUPPORTED_TOKENS_BY_CHAIN[97]; // Default to BNB Smart Chain Testnet
 };
 
 export type Token = typeof SUPPORTED_TOKENS[number];

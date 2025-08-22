@@ -67,22 +67,22 @@ const AIChatInterface: React.FC = () => {
       content: `👋 **Welcome to ProtectedPay AI Assistant!**
 
 I can help you with:
-• 💸 **Send transfers** - "Send 10 SEI to 0x1234..."
-• � **Check balances** - "What's my SEI balance?"
+• 💸 **Send transfers** - "Send 10 tBNB to 0x1234..."
+• 💰 **Check balances** - "What's my tBNB balance?"
 • 📋 **View history** - "Show my recent transfers"
 • 👥 **Group payments** - "Create group payment for Alice"
 • 🎯 **Pending actions** - "Show my pending transfers"
-• 🏦 **Savings pots** - "Create savings pot 'Vacation' with target 500 SEI"
+• 🏦 **Savings pots** - "Create savings pot 'Vacation' with target 500 tBNB"
 • 📊 **Transaction details** - "Show transfer details for [ID]"
-• 🧮 **Filter transactions** - "Show my refunded transactions", "Find my SEI transfers"
-• � **Get suggestions** - "What can I do with ProtectedPay?"
-• ⛓️ **Chain info** - "What tokens are supported on Sei?"
+• 🧮 **Filter transactions** - "Show my refunded transactions", "Find my tBNB transfers"
+• 💡 **Get suggestions** - "What can I do with ProtectedPay?"
+• ⛓️ **Chain info** - "What tokens are supported on BNB Smart Chain?"
 
 **Example Commands:**
-> "Send 25 SEI to alice"
+> "Send 25 tBNB to alice"
 > "What's my current balance?"
 
-Just tell me what you'd like to do! Make sure your wallet is connected and you're on the Sei Testnet network.`,
+Just tell me what you'd like to do! Make sure your wallet is connected and you're on the BNB Smart Chain Testnet network.`,
       timestamp: new Date(),
     },
   ])
@@ -145,9 +145,9 @@ Just tell me what you'd like to do! Make sure your wallet is connected and you'r
             handleSendMessage(`show details for ${id}`)
             break
           case 'explorer':
-            // Open transaction in Sei explorer
+            // Open transaction in BSC explorer
             if (typeof window !== 'undefined') {
-              const explorerUrl = `https://testnet.seistream.app/tx/${id}`
+              const explorerUrl = `https://testnet.bscscan.com/tx/${id}`
               window.open(explorerUrl, '_blank')
             }
             break
@@ -284,7 +284,7 @@ Just tell me what you'd like to do! Make sure your wallet is connected and you'r
         lowerInput.includes(token.symbol.toLowerCase())
       )
       return {
-        message: `🧮 Checking your ${tokenMatch?.symbol || 'SEI'} balance on Sei Testnet...\n\n` +
+        message: `🧮 Checking your ${tokenMatch?.symbol || 'tBNB'} balance on BNB Smart Chain Testnet...\n\n` +
           `• **Tip:** You can also ask "Show all my balances" or "What's my USDC balance?"`,
         action: {
           type: 'balance',
@@ -296,7 +296,7 @@ Just tell me what you'd like to do! Make sure your wallet is connected and you'r
     // Send transfer
     if (lowerInput.includes('send') || lowerInput.includes('transfer')) {
       // Extract amount
-      const amountMatch = input.match(/(\d+\.?\d*)\s*(sei|usdc|usdt)/i)
+      const amountMatch = input.match(/(\d+\.?\d*)\s*(bnb|tbnb|usdc|usdt)/i)
       // Extract address or username
       const addressMatch = input.match(/(0x[a-fA-F0-9]{40})|(@?\w+)/g)
       
@@ -323,7 +323,7 @@ Just tell me what you'd like to do! Make sure your wallet is connected and you'r
       }
       
       return {
-        message: '❓ Please specify the amount, token, and recipient.\n\n**Example:** "Send 10 SEI to 0x1234..." or "Send 100 USDC to alice"'
+        message: '❓ Please specify the amount, token, and recipient.\n\n**Example:** "Send 10 tBNB to 0x1234..." or "Send 100 USDC to alice"'
       }
     }
     
@@ -392,7 +392,7 @@ Just tell me what you'd like to do! Make sure your wallet is connected and you'r
       ).join('\n')
       
       return {
-        message: `⛓️ **Sei Testnet Supported Tokens:**\n\n${tokensText}\n\n` +
+        message: `⛓️ **BNB Smart Chain Testnet Supported Tokens:**\n\n${tokensText}\n\n` +
           `• **Tip:** You can send, claim, or refund any of these tokens using protected transfers!`,
       }
     }
@@ -401,20 +401,20 @@ Just tell me what you'd like to do! Make sure your wallet is connected and you'r
     if (lowerInput.includes('help') || lowerInput.includes('what') || lowerInput.includes('how')) {
       return {
         message: `🤖 **ProtectedPay AI Help**\n\n` +
-          `• **Send:** "Send 10 SEI to 0x1234..." or "Send 100 USDC to alice"\n` +
+          `• **Send:** "Send 10 tBNB to 0x1234..." or "Send 100 USDC to alice"\n` +
           `• **Claim:** "Claim from alice" or "Claim transfer 0x1234..."\n` +
           `• **Refund:** "Refund transfer 0x1234..."\n` +
           `• **Balances:** "What's my USDC balance?" or "Show my balance"\n` +
           `• **Transfers:** "Show my pending transfers"\n` +
           `• **Tokens:** "What tokens are supported?"\n\n` +
           `All transfers are protected. Recipients must claim them, and you can refund unclaimed transfers anytime!\n\n` +
-          `**Quick Actions:**\n• "Show my recent transfers"\n• "Create group payment for Alice"\n• "Create savings pot 'Vacation' with target 500 SEI"`,
+          `**Quick Actions:**\n• "Show my recent transfers"\n• "Create group payment for Alice"\n• "Create savings pot 'Vacation' with target 500 tBNB"`,
       }
     }
     
     // Default response
     return {
-      message: `🤔 I'm not sure how to help with that.\n\n**Try one of these:**\n• "Send 10 SEI to 0x1234..."\n• "What's my SEI balance?"\n• "Show my pending transfers"\n• "Create group payment for Alice"\n• "Create savings pot 'Vacation' with target 500 SEI"\n\nMake sure your wallet is connected!`,
+      message: `🤔 I'm not sure how to help with that.\n\n**Try one of these:**\n• "Send 10 tBNB to 0x1234..."\n• "What's my tBNB balance?"\n• "Show my pending transfers"\n• "Create group payment for Alice"\n• "Create savings pot 'Vacation' with target 500 tBNB"\n\nMake sure your wallet is connected!`,
     }
   }
 
@@ -524,7 +524,7 @@ Just tell me what you'd like to do! Make sure your wallet is connected and you'r
         
         if (result.success && result.data) {
           updateMessage(messageId, {
-            content: `💰 **Your ${token.symbol} Balance**\n\n• **${token.symbol}**: ${formatAmount(result.data.balance)}\n• **Address**: ${truncateAddress(address)}\n• **Chain**: Sei Testnet\n\nNeed to send or receive funds? Just ask me!`,
+            content: `💰 **Your ${token.symbol} Balance**\n\n• **${token.symbol}**: ${formatAmount(result.data.balance)}\n• **Address**: ${truncateAddress(address)}\n• **Chain**: BNB Smart Chain Testnet\n\nNeed to send or receive funds? Just ask me!`,
             status: 'sent',
           })
         } else {
@@ -543,7 +543,7 @@ Just tell me what you'd like to do! Make sure your wallet is connected and you'r
           }
           
           balanceText += `\n• **Address**: ${truncateAddress(address)}\n`
-          balanceText += `• **Chain**: Sei Testnet\n\n`
+          balanceText += `• **Chain**: BNB Smart Chain Testnet\n\n`
           balanceText += `Need to send or receive funds? Just ask me!`
           
           updateMessage(messageId, {
