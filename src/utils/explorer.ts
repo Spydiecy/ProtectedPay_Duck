@@ -2,10 +2,10 @@
 
 export const getExplorerUrl = (chainId: number): string => {
   switch (chainId) {
-    case 97: // BNB Smart Chain Testnet
-      return 'https://testnet.bscscan.com'
+    case 5545: // DuckChain Mainnet
+      return 'https://duckchain.io'
     default:
-      return 'https://testnet.bscscan.com' // BNB Smart Chain Testnet
+      return 'https://duckchain.io' // DuckChain Mainnet
   }
 }
 
@@ -21,7 +21,7 @@ export const getAddressUrl = (address: string, chainId: number): string => {
 
 export const getChainName = (chainId: number): string => {
   switch (chainId) {
-    case 97: return 'BNB Smart Chain Testnet'
+    case 5545: return 'DuckChain Mainnet'
     default: return `Chain ${chainId}`
   }
 }

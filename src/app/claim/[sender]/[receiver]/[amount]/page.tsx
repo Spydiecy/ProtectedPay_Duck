@@ -229,7 +229,7 @@ export default function ClaimPage() {
             >
               <div className="text-center mb-8">
                 <div className="text-5xl font-bold text-green-400 mb-2">
-                  {amount} tBNB
+                  {amount} TON
                 </div>
                 <div className="text-gray-400">Transfer Amount</div>
               </div>
@@ -277,7 +277,7 @@ export default function ClaimPage() {
               className="text-center mt-12"
             >
               <p className="text-gray-500 text-sm">
-                Powered by <span className="text-green-400 font-semibold">ProtectedPay</span> on BNB Smart Chain
+                Powered by <span className="text-green-400 font-semibold">ProtectedPay</span> on DuckChain
               </p>
             </motion.div>
           </div>
@@ -343,7 +343,7 @@ export default function ClaimPage() {
         >
           <CheckCircleIcon className="w-32 h-32 text-green-400 mx-auto mb-6" />
           <h1 className="text-4xl font-bold text-white mb-4">Transfer Claimed! 🎉</h1>
-          <p className="text-xl text-gray-300 mb-2">{amount} tBNB</p>
+          <p className="text-xl text-gray-300 mb-2">{amount} TON</p>
           <p className="text-gray-400">Redirecting to dashboard...</p>
         </motion.div>
       </div>
@@ -407,7 +407,7 @@ export default function ClaimPage() {
             {/* Amount */}
             <div className="text-center mb-8">
               <div className="text-5xl font-bold text-green-400 mb-2">
-                {amount} tBNB
+                {amount} TON
               </div>
               <div className="text-gray-400">Transfer Amount</div>
             </div>
@@ -523,7 +523,7 @@ export default function ClaimPage() {
             className="text-center mt-12"
           >
             <p className="text-gray-500 text-sm">
-              Powered by <span className="text-green-400 font-semibold">ProtectedPay</span> on BNB Smart Chain
+              Powered by <span className="text-green-400 font-semibold">ProtectedPay</span> on DuckChain
             </p>
           </motion.div>
         </div>

@@ -78,7 +78,7 @@ export default function HistoryPage() {
   // Fetch user data and transaction history
   const fetchTransactionData = useCallback(async () => {
     if (!signer || !address || typeof address !== 'string' || address.trim() === '' || !isValidAddress(address)) {
-      setError('Invalid wallet address. Please connect a valid BNB Smart Chain wallet.');
+      setError('Invalid wallet address. Please connect a valid DuckChain wallet.');
       setIsLoading(false);
       setTransactions([]);
       return;
@@ -304,7 +304,7 @@ export default function HistoryPage() {
       if (navigator.share) {
         await navigator.share({
           title: 'ProtectedPay Transfer Claim',
-          text: `You have received ${transaction.amount} tBNB on ProtectedPay!`,
+          text: `You have received ${transaction.amount} TON on ProtectedPay!`,
           url: link,
         });
       } else {

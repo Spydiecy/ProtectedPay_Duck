@@ -4,27 +4,27 @@ from web3 import Web3
 from google.adk.agents import Agent
 from typing import Optional
 
-# BNB Smart Chain Testnet configuration
-BNB_TESTNET_RPC = "hhttps://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb"
+# DuckChain Mainnet configuration
+DUCKCHAIN_RPC = "https://rpc.duckchain.io"
 
-# ProtectedPay contract address (testnet only)
-PROTECTEDPAY_CONTRACT_ADDRESS = "0xCa36dD890F987EDcE1D6D7C74Fb9df627c216BF6"
+# ProtectedPay contract address (DuckChain mainnet)
+PROTECTEDPAY_CONTRACT_ADDRESS = "0xf8Bc82B8184BDd37bF0226aca6e2a81c337bA076"
 
-# Initialize Web3 for testnet
-w3 = Web3(Web3.HTTPProvider(BNB_TESTNET_RPC))
+# Initialize Web3 for DuckChain
+w3 = Web3(Web3.HTTPProvider(DUCKCHAIN_RPC))
 
 # User session state for private key
 user_private_key = None
 
 # User session state for network preference
-user_network_preference = "testnet"
+user_network_preference = "mainnet"
 
-# Network configuration for balance checking (testnet only)
+# Network configuration for balance checking (DuckChain mainnet)
 NETWORK_CONFIG = {
-    "rpc_url": BNB_TESTNET_RPC,
-    "name": "BNB Smart Chain Testnet",
-    "chain_id": 97,
-    "currency_symbol": "tBNB"
+    "rpc_url": DUCKCHAIN_RPC,
+    "name": "DuckChain",
+    "chain_id": 5545,
+    "currency_symbol": "TON"
 }
 
 # Contract ABI (extracted from frontend)
@@ -1080,7 +1080,7 @@ CONTRACT_ABI = [
 	}
 ]
 
-# Initialize contract for testnet
+# Initialize contract for DuckChain mainnet
 contract = w3.eth.contract(address=PROTECTEDPAY_CONTRACT_ADDRESS, abi=CONTRACT_ABI)
 
 def set_private_key(private_key: str) -> dict:
@@ -1174,20 +1174,20 @@ def clear_private_key() -> dict:
     }
 
 def set_user_network_preference(network: str) -> dict:
-    """Set the user's preferred network for transactions. Only testnet is currently supported.
+    """Set the user's preferred network for transactions. Only mainnet is currently supported.
     
     Args:
-        network (str): The network preference (must be "testnet")
+        network (str): The network preference (must be "mainnet")
         
     Returns:
         dict: status and result or error msg.
     """
     global user_network_preference
     
-    if network.lower() != "testnet":
+    if network.lower() != "mainnet":
         return {
             "status": "error",
-            "error_message": "Only testnet is supported. ProtectedPay is not yet available on mainnet."
+            "error_message": "Only mainnet is supported. ProtectedPay is deployed on DuckChain mainnet."
         }
     
     user_network_preference = network.lower()
@@ -1220,25 +1220,25 @@ def explain_protectedpay_networks() -> dict:
     """
     return {
         "status": "success",
-        "report": """ProtectedPay is currently available on BNB Smart Chain Testnet only.
+        "report": """ProtectedPay is currently available on DuckChain mainnet.
 
 Network Details:
-- BNB Smart Chain Testnet
-  - Chain ID: 97
-  - RPC URL: https://bsc-testnet-rpc.publicnode.com
-  - Currency: tBNB (testnet BNB)
-  - Explorer: https://testnet.bscscan.com
-  - Contract Address: 0xCa36dD890F987EDcE1D6D7C74Fb9df627c216BF6
+- DuckChain
+  - Chain ID: 5545
+  - RPC URL: https://rpc.duckchain.io
+  - Currency: TON (native token)
+  - Explorer: https://duckchain.io
+  - Contract Address: 0xf8Bc82B8184BDd37bF0226aca6e2a81c337bA076
 
-To get testnet BNB for transactions, you can use the BNB Smart Chain testnet faucet.""",
+Make sure you have TON tokens for transactions on DuckChain.""",
         "networks": {
-            "testnet": {
-                "name": "BNB Smart Chain Testnet",
-                "chain_id": 97,
-                "rpc_url": "https://bsc-testnet-rpc.publicnode.com",
-                "currency": "tBNB",
-                "explorer": "https://testnet.bscscan.com",
-                "contract_address": "0xCa36dD890F987EDcE1D6D7C74Fb9df627c216BF6",
+            "mainnet": {
+                "name": "DuckChain",
+                "chain_id": 5545,
+                "rpc_url": "https://rpc.duckchain.io",
+                "currency": "TON",
+                "explorer": "https://duckchain.io",
+                "contract_address": "0xf8Bc82B8184BDd37bF0226aca6e2a81c337bA076",
                 "available": True
             }
         }
@@ -1253,10 +1253,10 @@ def check_network_for_transaction(network: Optional[str]) -> dict:
     Returns:
         dict: validation result
     """
-    if network and network.lower() != "testnet":
+    if network and network.lower() != "mainnet":
         return {
             "status": "error",
-            "error_message": "ProtectedPay is only available on testnet. Please use 'testnet' or leave network unspecified."
+            "error_message": "ProtectedPay is only available on mainnet. Please use 'mainnet' or leave network unspecified."
         }
     return {"status": "success"}
 
@@ -1269,8 +1269,8 @@ def get_contract_for_network(network: str) -> tuple:
     Returns:
         tuple: (contract, web3_instance)
     """
-    if network.lower() != "testnet":
-        raise ValueError("Only testnet is supported")
+    if network.lower() != "mainnet":
+        raise ValueError("Only mainnet is supported")
     
     return contract, w3
 
@@ -1307,12 +1307,12 @@ def execute_contract_transaction(contract, function_name: str, params: dict, val
         
         # Check account balance
         balance = network_w3.eth.get_balance(account.address)
-        print(f"Account balance: {network_w3.from_wei(balance, 'ether')} tBNB")
+        print(f"Account balance: {network_w3.from_wei(balance, 'ether')} TON")
         
         if balance == 0:
             return {
                 "status": "error",
-                "error_message": f"Account {account.address} has zero balance. Need tBNB for gas fees."
+                "error_message": f"Account {account.address} has zero balance. Need TON for gas fees."
             }
         
         # Get the contract function
@@ -1348,7 +1348,7 @@ def execute_contract_transaction(contract, function_name: str, params: dict, val
             'gas': gas_limit,
             'gasPrice': gas_price,
             'nonce': network_w3.eth.get_transaction_count(account.address),
-            'chainId': 97  # BNB Smart Chain Testnet chain ID
+            'chainId': 5545  # DuckChain chain ID
         })
         
         # Sign transaction
@@ -1402,7 +1402,7 @@ def execute_contract_transaction(contract, function_name: str, params: dict, val
             }
 
 def get_protectedpay_info() -> dict:
-    """Get information about the ProtectedPay contract on BNB Smart Chain Testnet.
+    """Get information about the ProtectedPay contract on DuckChain.
     
     Returns:
         dict: Information about ProtectedPay contract deployment
@@ -1410,23 +1410,23 @@ def get_protectedpay_info() -> dict:
     return {
         "status": "success",
         "report": "ProtectedPay Contract Info:\n\n" +
-                  "🧪 BNB SMART CHAIN TESTNET:\n" +
+                  "� DUCKCHAIN MAINNET:\n" +
                   f"- Contract Address: {PROTECTEDPAY_CONTRACT_ADDRESS}\n" +
                   "- Status: FULLY DEPLOYED ✅\n" +
                   "- Features: All ProtectedPay functions available (usernames, transfers, group payments, savings pots)\n" +
-                  "- Chain ID: 97\n" +
-                  "- Native Token: tBNB\n\n" +
-                  "📝 Note: This agent only supports BNB Smart Chain Testnet.",
+                  "- Chain ID: 5545\n" +
+                  "- Native Token: TON\n\n" +
+                  "📝 Note: This agent supports DuckChain mainnet.",
         "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS,
-        "network": "testnet",
-        "chain_id": 97
+        "network": "mainnet",
+        "chain_id": 5545
     }
 
 def get_token_price(token_symbol: str) -> dict:
     """Retrieves the current price of a cryptocurrency token in USD.
 
     Args:
-        token_symbol (str): The symbol of the cryptocurrency token (e.g., 'BTC', 'ETH', 'BNB').
+        token_symbol (str): The symbol of the cryptocurrency token (e.g., 'BTC', 'ETH', 'TON').
 
     Returns:
         dict: status and result or error msg.
@@ -1436,8 +1436,8 @@ def get_token_price(token_symbol: str) -> dict:
         token_mappings = {
             'bitcoin': 'BTC',
             'ethereum': 'ETH',
-            'bnb': 'BNB',
-            'binance': 'BNB',
+            'ton': 'TON',
+            'toncoin': 'TON',
             'usdc': 'USDC',
             'usdt': 'USDT',
             'cardano': 'ADA',
@@ -1446,7 +1446,7 @@ def get_token_price(token_symbol: str) -> dict:
             'chainlink': 'LINK',
             'litecoin': 'LTC',
             'dogecoin': 'DOG',
-            'tbnb': 'BNB'  # Testnet BNB maps to BNB for pricing
+            'duck': 'DUCK'  # DuckChain token
         }
         
         normalized_token = token_symbol.lower().strip()
@@ -1485,7 +1485,7 @@ def get_token_price(token_symbol: str) -> dict:
         }
 
 def register_username(username: str, user_address: str) -> dict:
-    """Register a username for a user address on ProtectedPay (testnet only).
+    """Register a username for a user address on ProtectedPay (mainnet).
 
     Args:
         username (str): The username to register
@@ -1501,7 +1501,7 @@ def register_username(username: str, user_address: str) -> dict:
                 "error_message": f"Invalid address format: {user_address}"
             }
         
-        # Execute the transaction on testnet
+        # Execute the transaction on mainnet
         tx_result = execute_contract_transaction(
             contract=contract,
             function_name="registerUsername", 
@@ -1509,12 +1509,12 @@ def register_username(username: str, user_address: str) -> dict:
                 "_username": username
             },
             value_wei=0,  # No value needed for username registration
-            network="testnet",
+            network="mainnet",
             network_w3=w3
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully registered username '{username}' for address {user_address} on testnet"
+            tx_result["report"] = f"Successfully registered username '{username}' for address {user_address} on mainnet"
             tx_result["username"] = username
             tx_result["registered_address"] = user_address
         
@@ -1525,12 +1525,12 @@ def register_username(username: str, user_address: str) -> dict:
             "error_message": f"Error preparing username registration: {str(e)}"
         }
 
-def send_to_address(recipient_address: str, amount_bnb: str, remarks: str, sender_address: str) -> dict:
-    """Send BNB tokens to a specific address (testnet only).
+def send_to_address(recipient_address: str, amount_ton: str, remarks: str, sender_address: str) -> dict:
+    """Send TON tokens to a specific address (mainnet).
 
     Args:
         recipient_address (str): The recipient's wallet address
-        amount_bnb (str): Amount of BNB to send
+        amount_ton (str): Amount of TON to send
         remarks (str): Message or remarks for the transfer
         sender_address (str): The sender's wallet address
 
@@ -1550,9 +1550,9 @@ def send_to_address(recipient_address: str, amount_bnb: str, remarks: str, sende
                 "error_message": f"Invalid sender address: {sender_address}"
             }
         
-        amount_wei = w3.to_wei(float(amount_bnb), 'ether')
+        amount_wei = w3.to_wei(float(amount_ton), 'ether')
         
-        # Execute the transaction on testnet
+        # Execute the transaction on mainnet
         tx_result = execute_contract_transaction(
             contract=contract,
             function_name="sendToAddress", 
@@ -1561,7 +1561,7 @@ def send_to_address(recipient_address: str, amount_bnb: str, remarks: str, sende
                 "_remarks": remarks
             },
             value_wei=amount_wei,
-            network="testnet",
+            network="mainnet",
             network_w3=w3
         )
         
@@ -1569,9 +1569,9 @@ def send_to_address(recipient_address: str, amount_bnb: str, remarks: str, sende
             # Generate a display ID for the newly created transfer
             transfer_id = f"new_tx_{tx_result['transaction_hash'][2:8]}_{int(time.time())}"
             
-            tx_result["report"] = f"Successfully sent {amount_bnb} BNB to {recipient_address} with message '{remarks}' on testnet. Transaction ID: {transfer_id}"
+            tx_result["report"] = f"Successfully sent {amount_ton} TON to {recipient_address} with message '{remarks}' on mainnet. Transaction ID: {transfer_id}"
             tx_result["display_transfer_id"] = transfer_id
-            tx_result["amount_bnb"] = amount_bnb
+            tx_result["amount_ton"] = amount_ton
             tx_result["recipient"] = recipient_address
             tx_result["remarks"] = remarks
             tx_result["note"] = "Use get_user_transfers() to see the actual transfer ID for refunds/claims"
@@ -1583,25 +1583,25 @@ def send_to_address(recipient_address: str, amount_bnb: str, remarks: str, sende
             "error_message": f"Error preparing send transaction: {str(e)}"
         }
 
-def send_to_username(username: str, amount_bnb: str, remarks: str, sender_address: str, network: Optional[str] = None) -> dict:
-    """Send BNB tokens to a user by their username (testnet only).
+def send_to_username(username: str, amount_ton: str, remarks: str, sender_address: str, network: Optional[str] = None) -> dict:
+    """Send TON tokens to a user by their username (mainnet).
 
     Args:
         username (str): The recipient's username
-        amount_bnb (str): Amount of BNB to send
+        amount_ton (str): Amount of TON to send
         remarks (str): Message or remarks for the transfer
         sender_address (str): The sender's wallet address
-        network (str): Network to use (must be "testnet" or None)
+        network (str): Network to use (must be "mainnet" or None)
 
     Returns:
         dict: status and result or error msg.
     """
     try:
-        # Only testnet is supported
-        if network is not None and network.lower() != "testnet":
+        # Only mainnet is supported
+        if network is not None and network.lower() != "mainnet":
             return {
                 "status": "error",
-                "error_message": "Only testnet is supported for ProtectedPay operations."
+                "error_message": "Only mainnet is supported for ProtectedPay operations."
             }
         
         if not w3.is_address(sender_address):
@@ -1610,9 +1610,9 @@ def send_to_username(username: str, amount_bnb: str, remarks: str, sender_addres
                 "error_message": f"Invalid sender address: {sender_address}"
             }
         
-        amount_wei = w3.to_wei(float(amount_bnb), 'ether')
+        amount_wei = w3.to_wei(float(amount_ton), 'ether')
         
-        # Execute the transaction on testnet
+        # Execute the transaction on mainnet
         tx_result = execute_contract_transaction(
             contract=contract,
             function_name="sendToUsername", 
@@ -1621,7 +1621,7 @@ def send_to_username(username: str, amount_bnb: str, remarks: str, sender_addres
                 "_remarks": remarks
             },
             value_wei=amount_wei,
-            network="testnet",
+            network="mainnet",
             network_w3=w3
         )
         
@@ -1629,9 +1629,9 @@ def send_to_username(username: str, amount_bnb: str, remarks: str, sender_addres
             # Generate a display ID for the newly created transfer
             transfer_id = f"new_tx_{tx_result['transaction_hash'][2:8]}_{int(time.time())}"
             
-            tx_result["report"] = f"Successfully sent {amount_bnb} BNB to username '{username}' with message '{remarks}' on testnet. Transaction ID: {transfer_id}"
+            tx_result["report"] = f"Successfully sent {amount_ton} TON to username '{username}' with message '{remarks}' on mainnet. Transaction ID: {transfer_id}"
             tx_result["display_transfer_id"] = transfer_id
-            tx_result["amount_bnb"] = amount_bnb
+            tx_result["amount_ton"] = amount_ton
             tx_result["recipient_username"] = username
             tx_result["remarks"] = remarks
             tx_result["note"] = "Use get_user_transfers() to see the actual transfer ID for refunds/claims"
@@ -1648,7 +1648,7 @@ def get_user_by_username(username: str, network: Optional[str] = None) -> dict:
 
     Args:
         username (str): The username to look up
-        network (str): Network to use (only "testnet" is supported)
+        network (str): Network to use (only "mainnet" is supported)
 
     Returns:
         dict: status and result or error msg.
@@ -1659,23 +1659,23 @@ def get_user_by_username(username: str, network: Optional[str] = None) -> dict:
         if network_check["status"] == "error":
             return network_check
         
-        # Get contract instance for testnet
-        network_contract, _ = get_contract_for_network("testnet")
+        # Get contract instance for mainnet
+        network_contract, _ = get_contract_for_network("mainnet")
         
         address = network_contract.functions.getUserByUsername(username).call()
         
         if address == "0x0000000000000000000000000000000000000000":
             return {
                 "status": "error",
-                "error_message": f"Username '{username}' is not registered on testnet"
+                "error_message": f"Username '{username}' is not registered on mainnet"
             }
         
         return {
             "status": "success",
-            "report": f"Username '{username}' is registered to address: {address} on testnet",
+            "report": f"Username '{username}' is registered to address: {address} on mainnet",
             "username": username,
             "address": address,
-            "network": "testnet",
+            "network": "mainnet",
             "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
         }
     except Exception as e:
@@ -1685,21 +1685,21 @@ def get_user_by_username(username: str, network: Optional[str] = None) -> dict:
         }
 
 def get_user_by_address(user_address: str, network: Optional[str] = None) -> dict:
-    """Get the username associated with an address (testnet only).
+    """Get the username associated with an address (mainnet).
 
     Args:
         user_address (str): The wallet address to look up
-        network (str): Network to use (must be "testnet" or None)
+        network (str): Network to use (must be "mainnet" or None)
 
     Returns:
         dict: status and result or error msg.
     """
     try:
-        # Only testnet is supported
-        if network is not None and network.lower() != "testnet":
+        # Only mainnet is supported
+        if network is not None and network.lower() != "mainnet":
             return {
                 "status": "error",
-                "error_message": "Only testnet is supported for ProtectedPay operations."
+                "error_message": "Only mainnet is supported for ProtectedPay operations."
             }
         
         if not w3.is_address(user_address):
@@ -1708,31 +1708,22 @@ def get_user_by_address(user_address: str, network: Optional[str] = None) -> dic
                 "error_message": f"Invalid address format: {user_address}"
             }
         
-        # Use testnet contract
+        # Use mainnet contract
         username = contract.functions.getUserByAddress(user_address).call()
         
         if not username:
             return {
                 "status": "error",
-                "error_message": f"No username registered for address {user_address} on testnet"
+                "error_message": f"No username registered for address {user_address} on mainnet"
             }
         
         return {
             "status": "success",
-            "report": f"Address {user_address} is registered with username: '{username}' on testnet",
+            "report": f"Address {user_address} is registered with username: '{username}' on mainnet",
             "address": user_address,
             "username": username,
-            "network": "testnet",
+            "network": "mainnet",
             "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
-        }
-        
-        return {
-            "status": "success",
-            "report": f"Address {user_address} is registered with username: '{username}' on {selected_network}",
-            "address": user_address,
-            "username": username,
-            "network": selected_network,
-            "contract_address": contract_address
         }
     except Exception as e:
         return {
@@ -1741,21 +1732,21 @@ def get_user_by_address(user_address: str, network: Optional[str] = None) -> dic
         }
 
 def get_user_transfers(user_address: str, network: Optional[str] = None) -> dict:
-    """Get all transfers for a specific user address (testnet only).
+    """Get all transfers for a specific user address (mainnet).
 
     Args:
         user_address (str): The user's wallet address
-        network (str): Network to use (must be "testnet" or None)
+        network (str): Network to use (must be "mainnet" or None)
 
     Returns:
         dict: status and result or error msg.
     """
     try:
-        # Only testnet is supported
-        if network is not None and network.lower() != "testnet":
+        # Only mainnet is supported
+        if network is not None and network.lower() != "mainnet":
             return {
                 "status": "error",
-                "error_message": "Only testnet is supported for ProtectedPay operations."
+                "error_message": "Only mainnet is supported for ProtectedPay operations."
             }
         
         if not w3.is_address(user_address):
@@ -1772,9 +1763,9 @@ def get_user_transfers(user_address: str, network: Optional[str] = None) -> dict
             if not transfer_ids:
                 return {
                     "status": "success",
-                    "report": f"No transfers found for address {user_address} on testnet",
+                    "report": f"No transfers found for address {user_address} on mainnet",
                     "transfers": [],
-                    "network": "testnet",
+                    "network": "mainnet",
                     "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
                 }
             
@@ -1794,7 +1785,7 @@ def get_user_transfers(user_address: str, network: Optional[str] = None) -> dict
                         "sender": transfer_details[0],
                         "recipient": transfer_details[1], 
                         "amount_wei": int(transfer_details[2]),
-                        "amount_bnb": float(w3.from_wei(transfer_details[2], 'ether')),
+                        "amount_ton": float(w3.from_wei(transfer_details[2], 'ether')),
                         "timestamp": int(transfer_details[3]),
                         "status": status_map.get(transfer_details[4], "Unknown"),
                         "remarks": transfer_details[5]
@@ -1805,10 +1796,10 @@ def get_user_transfers(user_address: str, network: Optional[str] = None) -> dict
             
             return {
                 "status": "success",
-                "report": f"Found {len(transfer_list)} transfers for address {user_address} on testnet",
+                "report": f"Found {len(transfer_list)} transfers for address {user_address} on mainnet",
                 "transfers": transfer_list,
                 "count": len(transfer_list),
-                "network": "testnet",
+                "network": "mainnet",
                 "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
             }
             
@@ -1820,9 +1811,9 @@ def get_user_transfers(user_address: str, network: Optional[str] = None) -> dict
             if not transfers:
                 return {
                     "status": "success",
-                    "report": f"No transfers found for address {user_address} on testnet",
+                    "report": f"No transfers found for address {user_address} on mainnet",
                     "transfers": [],
-                    "network": "testnet",
+                    "network": "mainnet",
                     "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
                 }
             
@@ -1836,7 +1827,7 @@ def get_user_transfers(user_address: str, network: Optional[str] = None) -> dict
                     "sender": transfer[0],
                     "recipient": transfer[1], 
                     "amount_wei": int(transfer[2]),
-                    "amount_bnb": float(w3.from_wei(transfer[2], 'ether')),
+                    "amount_ton": float(w3.from_wei(transfer[2], 'ether')),
                     "timestamp": int(transfer[3]),
                     "status": status_map.get(transfer[4], "Unknown"),
                     "remarks": transfer[5]
@@ -1844,10 +1835,10 @@ def get_user_transfers(user_address: str, network: Optional[str] = None) -> dict
             
             return {
                 "status": "success",
-                "report": f"Found {len(transfer_list)} transfers for address {user_address} on testnet (fallback method)",
+                "report": f"Found {len(transfer_list)} transfers for address {user_address} on mainnet (fallback method)",
                 "transfers": transfer_list,
                 "count": len(transfer_list),
-                "network": "testnet",
+                "network": "mainnet",
                 "contract_address": PROTECTEDPAY_CONTRACT_ADDRESS
             }
             
@@ -1857,27 +1848,27 @@ def get_user_transfers(user_address: str, network: Optional[str] = None) -> dict
             "error_message": f"Error fetching transfers for {user_address}: {str(e)}"
         }
 
-def create_group_payment(payment_id: str, recipient_address: str, num_participants: int, remarks: str, total_amount_bnb: str, creator_address: str, network: Optional[str] = None) -> dict:
-    """Create a group payment (testnet only).
+def create_group_payment(payment_id: str, recipient_address: str, num_participants: int, remarks: str, total_amount_ton: str, creator_address: str, network: Optional[str] = None) -> dict:
+    """Create a group payment (mainnet).
 
     Args:
         payment_id (str): Unique payment ID (32-byte hex string)
         recipient_address (str): The recipient's wallet address
         num_participants (int): Number of participants expected
         remarks (str): Payment description
-        total_amount_bnb (str): Total amount in BNB
+        total_amount_ton (str): Total amount in TON
         creator_address (str): The creator's wallet address
-        network (str): Network to use (must be "testnet" or None)
+        network (str): Network to use (must be "mainnet" or None)
 
     Returns:
         dict: status and result or error msg.
     """
     try:
-        # Only testnet is supported
-        if network is not None and network.lower() != "testnet":
+        # Only mainnet is supported
+        if network is not None and network.lower() != "mainnet":
             return {
                 "status": "error",
-                "error_message": "Only testnet is supported for ProtectedPay operations."
+                "error_message": "Only mainnet is supported for ProtectedPay operations."
             }
         
         if not w3.is_address(recipient_address):
@@ -1898,9 +1889,9 @@ def create_group_payment(payment_id: str, recipient_address: str, num_participan
         else:
             payment_id_bytes = payment_id.encode('utf-8')[:32].ljust(32, b'\0')
         
-        total_amount_wei = w3.to_wei(float(total_amount_bnb), 'ether')
+        total_amount_wei = w3.to_wei(float(total_amount_ton), 'ether')
         
-        # Execute transaction on testnet
+        # Execute transaction on mainnet
         
         # Execute the transaction
         tx_result = execute_contract_transaction(
@@ -1912,16 +1903,16 @@ def create_group_payment(payment_id: str, recipient_address: str, num_participan
                 "_remarks": remarks
             },
             value_wei=total_amount_wei,
-            network="testnet",
+            network="mainnet",
             network_w3=w3
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully created group payment with ID {payment_id} for {total_amount_bnb} BNB to {recipient_address} with {num_participants} participants on testnet"
+            tx_result["report"] = f"Successfully created group payment with ID {payment_id} for {total_amount_ton} TON to {recipient_address} with {num_participants} participants on mainnet"
             tx_result["payment_id"] = payment_id
             tx_result["recipient"] = recipient_address
             tx_result["num_participants"] = num_participants
-            tx_result["total_amount_bnb"] = total_amount_bnb
+            tx_result["total_amount_ton"] = total_amount_ton
             tx_result["remarks"] = remarks
         
         return tx_result
@@ -1931,26 +1922,26 @@ def create_group_payment(payment_id: str, recipient_address: str, num_participan
             "error_message": f"Error preparing group payment: {str(e)}"
         }
 
-def create_savings_pot(pot_id: str, name: str, target_amount_bnb: str, remarks: str, creator_address: str, network: Optional[str] = None) -> dict:
-    """Create a savings pot (testnet only).
+def create_savings_pot(pot_id: str, name: str, target_amount_ton: str, remarks: str, creator_address: str, network: Optional[str] = None) -> dict:
+    """Create a savings pot (mainnet).
 
     Args:
         pot_id (str): Unique pot ID (32-byte hex string)
         name (str): Name of the savings pot
-        target_amount_bnb (str): Target amount in BNB
+        target_amount_ton (str): Target amount in TON
         remarks (str): Pot description
         creator_address (str): The creator's wallet address
-        network (str): Network to use (must be "testnet" or None)
+        network (str): Network to use (must be "mainnet" or None)
 
     Returns:
         dict: status and result or error msg.
     """
     try:
-        # Only testnet is supported
-        if network is not None and network.lower() != "testnet":
+        # Only mainnet is supported
+        if network is not None and network.lower() != "mainnet":
             return {
                 "status": "error",
-                "error_message": "Only testnet is supported for ProtectedPay operations."
+                "error_message": "Only mainnet is supported for ProtectedPay operations."
             }
         
         if not w3.is_address(creator_address):
@@ -1965,9 +1956,9 @@ def create_savings_pot(pot_id: str, name: str, target_amount_bnb: str, remarks: 
         else:
             pot_id_bytes = pot_id.encode('utf-8')[:32].ljust(32, b'\0')
         
-        target_amount_wei = w3.to_wei(float(target_amount_bnb), 'ether')
+        target_amount_wei = w3.to_wei(float(target_amount_ton), 'ether')
         
-        # Execute the transaction on testnet
+        # Execute the transaction on mainnet
         tx_result = execute_contract_transaction(
             contract=contract,
             function_name="createSavingsPot", 
@@ -1977,15 +1968,15 @@ def create_savings_pot(pot_id: str, name: str, target_amount_bnb: str, remarks: 
                 "_remarks": remarks
             },
             value_wei=0,  # No value needed for creating savings pot
-            network="testnet",
+            network="mainnet",
             network_w3=w3
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully created savings pot '{name}' with target {target_amount_bnb} BNB on testnet"
+            tx_result["report"] = f"Successfully created savings pot '{name}' with target {target_amount_ton} TON on mainnet"
             tx_result["pot_id"] = pot_id
             tx_result["pot_name"] = name
-            tx_result["target_amount_bnb"] = target_amount_bnb
+            tx_result["target_amount_ton"] = target_amount_ton
             tx_result["remarks"] = remarks
         
         return tx_result
@@ -2140,12 +2131,12 @@ def calculate_gas_cost(gas_limit: str, gas_price_gwei: str) -> dict:
         }
 
 
-def get_bnb_balance(address: str, network: str = "testnet") -> dict:
-    """Get BNB balance for an address on BNB Smart Chain Testnet.
+def get_ton_balance(address: str, network: str = "mainnet") -> dict:
+    """Get TON balance for an address on DuckChain.
 
     Args:
         address (str): The wallet address to check balance for
-        network (str): Must be "testnet" (default: testnet)
+        network (str): Must be "mainnet" (default: mainnet)
 
     Returns:
         dict: status and result or error msg.
@@ -2161,42 +2152,42 @@ def get_bnb_balance(address: str, network: str = "testnet") -> dict:
                 "error_message": f"Invalid address format: {address}"
             }
         
-        # Validate network - only testnet supported
-        if network != "testnet":
+        # Validate network - only mainnet supported
+        if network != "mainnet":
             return {
                 "status": "error",
-                "error_message": f"Only testnet is supported. Got: {network}"
+                "error_message": f"Only mainnet is supported. Got: {network}"
             }
         
-        # Use testnet configuration
+        # Use mainnet configuration
         network_w3 = w3
         
         # Check connection
         if not network_w3.is_connected():
             return {
                 "status": "error",
-                "error_message": f"Unable to connect to BNB Smart Chain Testnet at {BNB_TESTNET_RPC}"
+                "error_message": f"Unable to connect to DuckChain at {DUCKCHAIN_RPC}"
             }
         
         # Get balance in Wei
         balance_wei = network_w3.eth.get_balance(address)
         
-        # Convert to BNB (ETH units)
-        balance_bnb = Web3.from_wei(balance_wei, 'ether')
+        # Convert to TON (ETH units)
+        balance_ton = Web3.from_wei(balance_wei, 'ether')
         
         # Get checksummed address
         checksum_address = Web3.to_checksum_address(address)
         
         return {
             "status": "success",
-            "report": f"Balance on BNB Smart Chain Testnet: {balance_bnb} tBNB",
+            "report": f"Balance on DuckChain: {balance_ton} TON",
             "address": checksum_address,
-            "network": "BNB Smart Chain Testnet",
-            "chain_id": 97,
+            "network": "DuckChain",
+            "chain_id": 5545,
             "balance_wei": balance_wei,
-            "balance_bnb": float(balance_bnb),
-            "currency_symbol": "tBNB",
-            "rpc_url": BNB_TESTNET_RPC
+            "balance_ton": float(balance_ton),
+            "currency_symbol": "TON",
+            "rpc_url": DUCKCHAIN_RPC
         }
         
     except Exception as e:
@@ -2206,13 +2197,13 @@ def get_bnb_balance(address: str, network: str = "testnet") -> dict:
         }
 
 def get_multiple_balances(address: str) -> dict:
-    """Get BNB balance for an address on BNB Smart Chain Testnet.
+    """Get TON balance for an address on DuckChain.
 
     Args:
         address (str): The wallet address to check balance for
 
     Returns:
-        dict: status and result for testnet or error msg.
+        dict: status and result for mainnet or error msg.
     """
     try:
         address = address.strip()
@@ -2226,24 +2217,24 @@ def get_multiple_balances(address: str) -> dict:
         
         checksum_address = Web3.to_checksum_address(address)
         
-        # Get balance on testnet only
-        balance_result = get_bnb_balance(address, "testnet")
+        # Get balance on mainnet only
+        balance_result = get_ton_balance(address, "mainnet")
         
         if balance_result["status"] == "success":
-            report = f"Balance for {checksum_address} on Testnet: {balance_result['balance_bnb']} tBNB"
+            report = f"Balance for {checksum_address} on DuckChain: {balance_result['balance_ton']} TON"
             
             return {
                 "status": "success",
                 "report": report,
                 "address": checksum_address,
-                "balances": {"testnet": balance_result}
+                "balances": {"mainnet": balance_result}
             }
         else:
             return {
                 "status": "error",
-                "error_message": f"Failed to fetch balance on testnet for {checksum_address}: {balance_result['error_message']}",
+                "error_message": f"Failed to fetch balance on mainnet for {checksum_address}: {balance_result['error_message']}",
                 "address": checksum_address,
-                "balances": {"testnet": balance_result}
+                "balances": {"mainnet": balance_result}
             }
             
     except Exception as e:
@@ -2254,7 +2245,7 @@ def get_multiple_balances(address: str) -> dict:
 
 
 def claim_transfer_by_id(transfer_id: str, claimer_address: str) -> dict:
-    """Claim a transfer by its ID (testnet only).
+    """Claim a transfer by its ID (mainnet only).
 
     Args:
         transfer_id (str): The transfer ID to claim (hex string from get_user_transfers)
@@ -2289,7 +2280,7 @@ def claim_transfer_by_id(transfer_id: str, claimer_address: str) -> dict:
                 "error_message": f"Invalid transfer ID format: {hex_error}"
             }
         
-        # Execute the transaction on testnet
+        # Execute the transaction on mainnet
         tx_result = execute_contract_transaction(
             contract=contract,
             function_name="claimTransferById", 
@@ -2297,12 +2288,12 @@ def claim_transfer_by_id(transfer_id: str, claimer_address: str) -> dict:
                 "_transferId": transfer_id_bytes
             },
             value_wei=0,  # No value needed for claiming
-            network="testnet",
+            network="mainnet",
             network_w3=w3
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully claimed transfer ID {transfer_id} for address {claimer_address} on testnet"
+            tx_result["report"] = f"Successfully claimed transfer ID {transfer_id} for address {claimer_address} on mainnet"
             tx_result["transfer_id"] = transfer_id
             tx_result["claimer_address"] = claimer_address
         
@@ -2314,7 +2305,7 @@ def claim_transfer_by_id(transfer_id: str, claimer_address: str) -> dict:
         }
 
 def claim_transfer_by_username(sender_username: str, claimer_address: str) -> dict:
-    """Claim a pending transfer from a sender by their username (testnet only).
+    """Claim a pending transfer from a sender by their username (mainnet only).
     
     This function finds a pending transfer from the sender with the specified username
     and claims it for the claimer address.
@@ -2333,7 +2324,7 @@ def claim_transfer_by_username(sender_username: str, claimer_address: str) -> di
                 "error_message": f"Invalid claimer address: {claimer_address}"
             }
         
-        # Execute the transaction on testnet
+        # Execute the transaction on mainnet
         tx_result = execute_contract_transaction(
             contract=contract,
             function_name="claimTransferByUsername", 
@@ -2341,12 +2332,12 @@ def claim_transfer_by_username(sender_username: str, claimer_address: str) -> di
                 "_senderUsername": sender_username
             },
             value_wei=0,  # No value needed for claiming
-            network="testnet",
+            network="mainnet",
             network_w3=w3
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully claimed pending transfer from sender username '{sender_username}' for address {claimer_address} on testnet"
+            tx_result["report"] = f"Successfully claimed pending transfer from sender username '{sender_username}' for address {claimer_address} on mainnet"
             tx_result["sender_username"] = sender_username
             tx_result["claimer_address"] = claimer_address
         
@@ -2358,7 +2349,7 @@ def claim_transfer_by_username(sender_username: str, claimer_address: str) -> di
         }
 
 def claim_transfer_by_address(sender_address: str, claimer_address: str) -> dict:
-    """Claim a pending transfer from a sender by their address (testnet only).
+    """Claim a pending transfer from a sender by their address (mainnet only).
     
     This function finds a pending transfer from the sender with the specified address
     and claims it for the claimer address.
@@ -2383,7 +2374,7 @@ def claim_transfer_by_address(sender_address: str, claimer_address: str) -> dict
                 "error_message": f"Invalid claimer address: {claimer_address}"
             }
         
-        # Execute the transaction on testnet
+        # Execute the transaction on mainnet
         tx_result = execute_contract_transaction(
             contract=contract,
             function_name="claimTransferByAddress", 
@@ -2391,12 +2382,12 @@ def claim_transfer_by_address(sender_address: str, claimer_address: str) -> dict
                 "_senderAddress": sender_address
             },
             value_wei=0,  # No value needed for claiming
-            network="testnet",
+            network="mainnet",
             network_w3=w3
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully claimed pending transfer from sender address {sender_address} for address {claimer_address} on testnet"
+            tx_result["report"] = f"Successfully claimed pending transfer from sender address {sender_address} for address {claimer_address} on mainnet"
             tx_result["sender_address"] = sender_address
             tx_result["claimer_address"] = claimer_address
         
@@ -2407,12 +2398,12 @@ def claim_transfer_by_address(sender_address: str, claimer_address: str) -> dict
             "error_message": f"Error preparing claim transfer by address: {str(e)}"
         }
 
-def contribute_to_group_payment(payment_id: str, contribution_bnb: str, contributor_address: str) -> dict:
+def contribute_to_group_payment(payment_id: str, contribution_ton: str, contributor_address: str) -> dict:
     """Contribute to a group payment.
 
     Args:
         payment_id (str): The group payment ID
-        contribution_bnb (str): Amount to contribute in BNB
+        contribution_ton (str): Amount to contribute in TON
         contributor_address (str): The contributor's wallet address
 
     Returns:
@@ -2431,10 +2422,10 @@ def contribute_to_group_payment(payment_id: str, contribution_bnb: str, contribu
         else:
             payment_id_bytes = payment_id.encode('utf-8')[:32].ljust(32, b'\0')
         
-        contribution_wei = w3.to_wei(float(contribution_bnb), 'ether')
+        contribution_wei = w3.to_wei(float(contribution_ton), 'ether')
         
         # Get contract instance for the selected network
-        contract, network_w3 = get_contract_for_network("testnet")  # Using testnet for now since mainnet is not deployed
+        contract, network_w3 = get_contract_for_network("mainnet")  # Using mainnet for DuckChain
         
         # Execute the transaction
         tx_result = execute_contract_transaction(
@@ -2444,14 +2435,14 @@ def contribute_to_group_payment(payment_id: str, contribution_bnb: str, contribu
                 "_paymentId": payment_id_bytes.hex()
             },
             value_wei=contribution_wei,
-            network="testnet",
+            network="mainnet",
             network_w3=network_w3
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully contributed {contribution_bnb} BNB to group payment {payment_id}"
+            tx_result["report"] = f"Successfully contributed {contribution_ton} TON to group payment {payment_id}"
             tx_result["payment_id"] = payment_id
-            tx_result["contribution_bnb"] = contribution_bnb
+            tx_result["contribution_ton"] = contribution_ton
         
         return tx_result
     except Exception as e:
@@ -2460,12 +2451,12 @@ def contribute_to_group_payment(payment_id: str, contribution_bnb: str, contribu
             "error_message": f"Error preparing group payment contribution: {str(e)}"
         }
 
-def contribute_to_savings_pot(pot_id: str, contribution_bnb: str, contributor_address: str) -> dict:
+def contribute_to_savings_pot(pot_id: str, contribution_ton: str, contributor_address: str) -> dict:
     """Contribute to a savings pot.
 
     Args:
         pot_id (str): The savings pot ID
-        contribution_bnb (str): Amount to contribute in BNB
+        contribution_ton (str): Amount to contribute in TON
         contributor_address (str): The contributor's wallet address
 
     Returns:
@@ -2484,10 +2475,10 @@ def contribute_to_savings_pot(pot_id: str, contribution_bnb: str, contributor_ad
         else:
             pot_id_bytes = pot_id.encode('utf-8')[:32].ljust(32, b'\0')
         
-        contribution_wei = w3.to_wei(float(contribution_bnb), 'ether')
+        contribution_wei = w3.to_wei(float(contribution_ton), 'ether')
         
         # Get contract instance for the selected network
-        contract, network_w3 = get_contract_for_network("testnet")  # Using testnet for now since mainnet is not deployed
+        contract, network_w3 = get_contract_for_network("mainnet")  # Using mainnet for DuckChain
         
         # Execute the transaction
         tx_result = execute_contract_transaction(
@@ -2497,14 +2488,14 @@ def contribute_to_savings_pot(pot_id: str, contribution_bnb: str, contributor_ad
                 "_potId": pot_id_bytes.hex()
             },
             value_wei=contribution_wei,
-            network="testnet",
+            network="mainnet",
             network_w3=network_w3
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully contributed {contribution_bnb} BNB to savings pot {pot_id}"
+            tx_result["report"] = f"Successfully contributed {contribution_ton} TON to savings pot {pot_id}"
             tx_result["pot_id"] = pot_id
-            tx_result["contribution_bnb"] = contribution_bnb
+            tx_result["contribution_ton"] = contribution_ton
         
         return tx_result
     except Exception as e:
@@ -2514,7 +2505,7 @@ def contribute_to_savings_pot(pot_id: str, contribution_bnb: str, contributor_ad
         }
 
 def refund_transfer(transfer_id: str, sender_address: str) -> dict:
-    """Refund a transfer by its ID (testnet only). Only the original sender can refund.
+    """Refund a transfer by its ID (mainnet only). Only the original sender can refund.
 
     Args:
         transfer_id (str): The transfer ID to refund (hex string from get_user_transfers)
@@ -2549,7 +2540,7 @@ def refund_transfer(transfer_id: str, sender_address: str) -> dict:
                 "error_message": f"Invalid transfer ID format: {hex_error}"
             }
         
-        # Execute the transaction on testnet
+        # Execute the transaction on mainnet
         tx_result = execute_contract_transaction(
             contract=contract,
             function_name="refundTransfer", 
@@ -2557,12 +2548,12 @@ def refund_transfer(transfer_id: str, sender_address: str) -> dict:
                 "_transferId": transfer_id_bytes
             },
             value_wei=0,  # No value needed for refunding
-            network="testnet",
+            network="mainnet",
             network_w3=w3
         )
         
         if tx_result["status"] == "success":
-            tx_result["report"] = f"Successfully refunded transfer ID {transfer_id} for sender {sender_address} on testnet"
+            tx_result["report"] = f"Successfully refunded transfer ID {transfer_id} for sender {sender_address} on mainnet"
             tx_result["transfer_id"] = transfer_id
             tx_result["sender_address"] = sender_address
         
@@ -2586,27 +2577,25 @@ root_agent = Agent(
         "2. Convert between ETH and Wei using web3.py utilities\n"
         "3. Validate Ethereum addresses and provide checksummed versions\n"
         "4. Calculate gas costs for Ethereum transactions\n\n"
-        "You can handle various token symbols like BTC, ETH, BNB, USDC, USDT, and many others. "
-        "You can also understand common token names like 'bitcoin' for BTC, 'ethereum' for ETH, 'bnb' for BNB, etc. "
+        "You can handle various token symbols like BTC, ETH, TON, USDC, USDT, DUCK, and many others. "
+        "You can also understand common token names like 'bitcoin' for BTC, 'ethereum' for ETH, 'ton' for TON, etc. "
         "For web3 operations, always provide clear explanations of the conversions and calculations.\n\n"
         "5. Manage private keys and execute transactions:\n"
         "- Set private key for transaction signing\n"
         "- Get wallet information and address\n"
         "- Clear private key for security\n"
         "- Execute actual blockchain transactions (not just simulate them)\n\n"
-        "6. Interact with the ProtectedPay smart contract on BNB Smart Chain Testnet and Mainnet:\n"
-        "- Set network preference (testnet/mainnet) - will remember your choice\n"
+        "6. Interact with the ProtectedPay smart contract on DuckChain:\n"
+        "- Set network preference (mainnet) - will remember your choice\n"
         "- Register usernames (executes transaction)\n"
-        "- Send BNB to addresses or usernames (executes transaction)\n" 
+        "- Send TON to addresses or usernames (executes transaction)\n" 
         "- Look up users by username or address\n"
         "- Get user transfer history\n"
         "- Create and manage group payments (executes transaction)\n"
         "- Create and manage savings pots (executes transaction)\n"
-        "- Claim transfers, contribute to payments/pots, and handle refunds (executes transaction)\n"
-        "- Note: Mainnet contract is not yet deployed (using 0x0 address)\n\n"
-        "7. Check BNB balances:\n"
-        "- Get BNB balance on BNB Smart Chain Testnet or Mainnet for any address\n"
-        "- Compare balances across both networks\n"
+        "- Claim transfers, contribute to payments/pots, and handle refunds (executes transaction)\n\n"
+        "7. Check TON balances:\n"
+        "- Get TON balance on DuckChain for any address\n"
         "- Validate addresses and provide checksummed versions\n\n"
         "IMPORTANT: For write operations (transfers, registrations, etc.), you need to set a private key first using set_private_key(). The agent will then execute actual blockchain transactions and return transaction hashes and receipts."
     ),
@@ -2615,7 +2604,7 @@ root_agent = Agent(
         convert_eth_wei, 
         validate_ethereum_address, 
         calculate_gas_cost,
-        get_bnb_balance,
+        get_ton_balance,
         get_multiple_balances,
         set_user_network_preference,
         get_user_network_preference,

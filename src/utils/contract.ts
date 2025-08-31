@@ -1,15 +1,15 @@
 import { ethers } from 'ethers';
 import { isValidAddress } from './address';
 
-const MAIN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_BNB_MAIN_CONTRACT || '0xCa36dD890F987EDcE1D6D7C74Fb9df627c216BF6';
-const TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_BNB_TOKEN_CONTRACT || '0x0';
+const MAIN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_DUCKCHAIN_MAIN_CONTRACT || '0xf8Bc82B8184BDd37bF0226aca6e2a81c337bA076';
+const TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_DUCKCHAIN_TOKEN_CONTRACT || '0x0';
 
 const CONTRACT_ADDRESSES = {
-  97: MAIN_CONTRACT_ADDRESS, // BNB Smart Chain Testnet
+  5545: MAIN_CONTRACT_ADDRESS, // DuckChain Mainnet
 } as const;
 
 const TOKEN_CONTRACT_ADDRESSES = {
-  97: TOKEN_CONTRACT_ADDRESS, // BNB Smart Chain Testnet
+  5545: TOKEN_CONTRACT_ADDRESS, // DuckChain Mainnet
 } as const;
 
 const TOKEN_CONTRACT_ABI =  [
@@ -1853,7 +1853,7 @@ interface TransferEvent {
   // Gets the appropriate contract address based on chainId
   const getContractAddress = async (signer: ethers.Signer) => {
 	const chainId = await signer.getChainId();
-	return CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES] || CONTRACT_ADDRESSES[97]; // Default to BNB Smart Chain Testnet
+	return CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES] || CONTRACT_ADDRESSES[5545]; // Default to DuckChain Mainnet
   };
   
   // Contract instance getter with chain awareness
@@ -2301,16 +2301,16 @@ userAddress: string
   
   export const getChainNativeCurrency = (chainId: number) => {
 	switch (chainId) {
-	  case 97:
+	  case 5545:
 		return {
-		  name: 'tBNB',
-		  symbol: 'tBNB',
+		  name: 'TON',
+		  symbol: 'TON',
 		  decimals: 18
 		};
 	  default:
 		return {
-		  name: 'tBNB',
-		  symbol: 'tBNB',
+		  name: 'TON',
+		  symbol: 'TON',
 		  decimals: 18
 		};
 	}
@@ -2318,10 +2318,10 @@ userAddress: string
   
   export const getExplorerUrl = (chainId: number) => {
 	switch (chainId) {
-	  case 97:
-		return 'https://testnet.bscscan.com';
+	  case 5545:
+		return 'https://duckchain.io';
 	  default:
-		return 'https://testnet.bscscan.com';
+		return 'https://duckchain.io';
 	}
   };
   
@@ -2361,7 +2361,7 @@ userAddress: string
 		return 'Transaction was rejected by user';
 	  }
 	  if (error.message.includes('insufficient funds')) {
-		return `Insufficient ${getChainNativeCurrency(chainId || 97).symbol} for transaction`;
+		return `Insufficient ${getChainNativeCurrency(chainId || 5545).symbol} for transaction`;
 	  }
 	  return error.message;
 	}
@@ -2372,7 +2372,7 @@ userAddress: string
 // Token Contract Functions
   const getTokenContractAddress = async (signer: ethers.Signer) => {
   const chainId = await signer.getChainId();
-  return TOKEN_CONTRACT_ADDRESSES[chainId as keyof typeof TOKEN_CONTRACT_ADDRESSES] || TOKEN_CONTRACT_ADDRESSES[97]; // Default to BNB Smart Chain Testnet
+  return TOKEN_CONTRACT_ADDRESSES[chainId as keyof typeof TOKEN_CONTRACT_ADDRESSES] || TOKEN_CONTRACT_ADDRESSES[5545]; // Default to DuckChain Mainnet
 };// Token contract instance getter with chain awareness
 export const getTokenContract = async (signer: ethers.Signer) => {
   const address = await getTokenContractAddress(signer);
@@ -2381,7 +2381,7 @@ export const getTokenContract = async (signer: ethers.Signer) => {
 
 // Helper function to parse token amount with correct decimals
 const parseTokenAmount = (amount: string, tokenAddress: string): ethers.BigNumber => {
-  // Check if it's a specific token (custom logic for BNB Smart Chain only)
+  // Check if it's a specific token (custom logic for DuckChain only)
   // if (tokenAddress.toLowerCase() === 'SPECIFIC_TOKEN_ADDRESS'.toLowerCase()) {
   //   return ethers.utils.parseUnits(amount, 6);
   // }
@@ -2604,7 +2604,7 @@ export const getTokenAllowance = async (
 	return ethers.constants.MaxUint256.toString();
   }
   
-  // BNB Smart Chain: All tokens use standard ERC20 allowance logic
+  // DuckChain: All tokens use standard ERC20 allowance logic
   
   // For other ERC20 tokens, use standard ERC20 interface
   const erc20Contract = new ethers.Contract(tokenAddress, [

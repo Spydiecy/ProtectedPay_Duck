@@ -1,6 +1,6 @@
-# ProtectedPay Agent - BNB Smart Chain
+# ProtectedPay Agent - DuckChain
 
-This agent provides complete interaction with the ProtectedPay smart contract on BNB Smart Chain, including both read and write operations.
+This agent provides complete interaction with the ProtectedPay smart contract on DuckChain, including both read and write operations.
 
 ## Features
 
@@ -10,11 +10,11 @@ This agent provides complete interaction with the ProtectedPay smart contract on
 - **Clear Private Key**: Remove stored private key for security
 
 ### 🌐 Network Management
-- **Set Network Preference**: Choose between testnet (Chain ID 97) and mainnet (Chain ID 56)
+- **Set Network Preference**: Choose DuckChain mainnet (Chain ID 5545)
 - **Network Status**: Check contract deployment status on different networks
 
 ### 💰 Balance Operations
-- **Check BNB Balance**: Get tBNB/BNB balance on testnet/mainnet
+- **Check TON Balance**: Get TON balance on mainnet
 - **Multi-Network Balance**: Compare balances across networks
 
 ### 📝 Username System
@@ -23,8 +23,8 @@ This agent provides complete interaction with the ProtectedPay smart contract on
 - **Lookup by Address**: Find username associated with a wallet address
 
 ### 💸 Transfer Operations
-- **Send to Address**: Transfer BNB to any wallet address (executes transaction)
-- **Send to Username**: Transfer BNB to a registered username (executes transaction)
+- **Send to Address**: Transfer TON to any wallet address (executes transaction)
+- **Send to Username**: Transfer TON to a registered username (executes transaction)
 - **Transaction History**: View all transfers for a wallet
 
 ### 👥 Group Payments
@@ -59,8 +59,8 @@ print(result)
 
 ### 3. Check Your Balance
 ```python
-# Check your BNB balance
-result = root_agent.run("What's my BNB balance?")
+# Check your TON balance
+result = root_agent.run("What's my TON balance?")
 print(result)
 ```
 
@@ -71,31 +71,25 @@ result = root_agent.run("Register the username 'myusername' for my wallet")
 print(result)
 ```
 
-### 5. Send BNB
+### 5. Send TON
 ```python
-# Send BNB to an address (executes blockchain transaction)
-result = root_agent.run("Send 0.001 BNB to 0x742d35Cc6686C8d0C5bfBf1EB96aeDB8ee03Cb8F with message 'payment for services'")
+# Send TON to an address (executes blockchain transaction)
+result = root_agent.run("Send 0.001 TON to 0x742d35Cc6686C8d0C5bfBf1EB96aeDB8ee03Cb8F with message 'payment for services'")
 print(result)
 
-# Send BNB to a username (executes blockchain transaction)
-result = root_agent.run("Send 0.001 BNB to username 'alice' with message 'lunch money'")
+# Send TON to a username (executes blockchain transaction)
+result = root_agent.run("Send 0.001 TON to username 'alice' with message 'lunch money'")
 print(result)
 ```
 
 ## Network Configuration
 
-### BNB Smart Chain Testnet (Recommended for testing)
-- **Chain ID**: 97
-- **Currency**: tBNB
-- **RPC URL**: https://bsc-testnet-rpc.publicnode.com
-- **Explorer**: https://testnet.bscscan.com
-- **Contract**: 0xCa36dD890F987EDcE1D6D7C74Fb9df627c216BF6
-
-### BNB Smart Chain Mainnet
-- **Chain ID**: 56
-- **Currency**: BNB
-- **RPC URL**: https://bsc-dataseed.binance.org
-- **Explorer**: https://bscscan.com
+### DuckChain Mainnet
+- **Chain ID**: 5545
+- **Currency**: TON
+- **RPC URL**: https://rpc.duckchain.io
+- **Explorer**: https://duckchain.io
+- **Contract**: 0xf8Bc82B8184BDd37bF0226aca6e2a81c337bA076
 - **Contract**: Not yet deployed
 
 ## Security Notes
@@ -137,5 +131,5 @@ The agent provides detailed error messages for common issues:
 
 For questions or issues:
 - Check the transaction on the block explorer using the returned transaction hash
-- Ensure you have sufficient tBNB for gas fees on testnet
+- Ensure you have sufficient TON for gas fees on mainnet
 - Verify your private key is correct and has the necessary permissions

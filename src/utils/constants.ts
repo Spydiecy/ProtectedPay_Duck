@@ -35,23 +35,15 @@ export const SUPPORTED_TOKENS_BY_CHAIN: Record<number, Array<{
   logo: string;
   isNative: boolean;
 }>> = {
-  // BNB Smart Chain Testnet
-  97: [
+  // DuckChain Mainnet
+  5545: [
     {
       address: 'NATIVE',
-      symbol: 'tBNB',
-      name: 'tBNB (Native)',
+      symbol: 'TON',
+      name: 'TON (Native)',
       decimals: 18,
-      logo: '/chains/bnb.svg',
+      logo: '/chains/ton.svg',
       isNative: true
-    },
-    {
-      address: '0x0000000000000000000000000000000000000000', // Placeholder - update with actual contract address
-      symbol: 'USDC',
-      name: 'USD Coin',
-      decimals: 6,
-      logo: '/chains/usdc.png',
-      isNative: false
     },
     {
       address: '0x0000000000000000000000000000000000000000', // Placeholder - update with actual contract address
@@ -60,16 +52,24 @@ export const SUPPORTED_TOKENS_BY_CHAIN: Record<number, Array<{
       decimals: 6,
       logo: '/chains/usdt.png',
       isNative: false
+    },
+    {
+      address: '0x0000000000000000000000000000000000000000', // Placeholder - update with actual contract address
+      symbol: 'DUCK',
+      name: 'Duck Token',
+      decimals: 18,
+      logo: '/chains/duck.png',
+      isNative: false
     }
   ]
 } as const;
 
-// Legacy support - defaults to BNB Smart Chain Testnet tokens
-export const SUPPORTED_TOKENS = SUPPORTED_TOKENS_BY_CHAIN[97];
+// Legacy support - defaults to DuckChain Mainnet tokens
+export const SUPPORTED_TOKENS = SUPPORTED_TOKENS_BY_CHAIN[5545];
 
 // Helper function to get supported tokens for a specific chain
 export const getSupportedTokensForChain = (chainId: number) => {
-  return SUPPORTED_TOKENS_BY_CHAIN[chainId] || SUPPORTED_TOKENS_BY_CHAIN[97]; // Default to BNB Smart Chain Testnet
+  return SUPPORTED_TOKENS_BY_CHAIN[chainId] || SUPPORTED_TOKENS_BY_CHAIN[5545]; // Default to DuckChain Mainnet
 };
 
 export type Token = typeof SUPPORTED_TOKENS[number];

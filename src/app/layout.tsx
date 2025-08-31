@@ -10,9 +10,9 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: 'ProtectedPay | Secure Crypto Transfers on BNB Smart Chain Testnet',
-  description: 'Secure crypto transfers, group payments, and smart savings on BNB Smart Chain Testnet with native tBNB support',
-  keywords: 'crypto, payments, blockchain, BNB, tBNB, BSC, testnet, EVM, DeFi, secure transfers, group payments, decentralized',
+  title: 'ProtectedPay | Secure Crypto Transfers on DuckChain Mainnet',
+  description: 'Secure crypto transfers, group payments, and smart savings on DuckChain Mainnet with native TON support',
+  keywords: 'crypto, payments, blockchain, TON, DUCK, USDT, duckchain, mainnet, EVM, DeFi, secure transfers, group payments, decentralized',
   authors: [{ name: 'ProtectedPay' }],
 };
 

@@ -22,33 +22,33 @@ type ExtendedProvider = ethers.providers.ExternalProvider & {
 };
 
 // Define chains
-const bnbTestnetNetwork = {
-  id: 97,
-  name: 'BNB Smart Chain Testnet',
-  network: 'bsc-testnet',
+const duckChainMainnet = {
+  id: 5545,
+  name: 'DuckChain Mainnet',
+  network: 'duckchain',
   nativeCurrency: {
     decimals: 18,
-    name: 'tBNB',
-    symbol: 'tBNB',
+    name: 'TON',
+    symbol: 'TON',
   },
   rpcUrls: {
     public: {
-      http: ['https://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb']
+      http: ['https://rpc.duckchain.io']
     },
     default: {
-      http: ['https://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb']
+      http: ['https://rpc.duckchain.io']
     },
   },
   blockExplorers: {
     default: {
-      name: 'BSC Testnet Explorer',
-      url: 'https://testnet.bscscan.com'
+      name: 'DuckChain Explorer',
+      url: 'https://duckchain.io'
     },
   },
-  testnet: true,
+  testnet: false,
 } as const;
 
-const chains = [bnbTestnetNetwork] as const;
+const chains = [duckChainMainnet] as const;
 
 const projectId = 'b8ad206ba9492e6096fa0aa0f868586c';
 
@@ -68,7 +68,7 @@ const wagmiConfig = createConfig({
   connectors,
   chains,
   transports: {
-    [bnbTestnetNetwork.id]: http(),
+    [duckChainMainnet.id]: http(),
   },
 });
 

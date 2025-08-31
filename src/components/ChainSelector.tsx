@@ -16,25 +16,25 @@ export interface ChainInfo {
 
 const SUPPORTED_CHAINS = [
   {
-    id: 97,
-    hexId: '0x61',
-    name: 'BNB Smart Chain Testnet',
-    icon: '/chains/bnb.svg',
-    symbol: 'tBNB',
-    rpcUrl: 'https://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb',
-    blockExplorerUrl: 'https://testnet.bscscan.com'
+    id: 5545,
+    hexId: '0x15A9',
+    name: 'DuckChain Mainnet',
+    icon: '/chains/duck.png',
+    symbol: 'TON',
+    rpcUrl: 'https://rpc.duckchain.io',
+    blockExplorerUrl: 'https://duckchain.io'
   }
 ] as const;
 
 export const supportedChains: ChainInfo[] = [
   {
-    id: 97,
-    hexId: '0x61',
-    name: 'BNB Smart Chain Testnet',
-    icon: '/chains/bnb.svg',
-    symbol: 'tBNB',
-    rpcUrl: 'https://rpc.ankr.com/bsc_testnet_chapel/95562eaf689cb4ca054efa27c8f05a6fd6789071d7f3f6296dbaff34ce374edb',
-    blockExplorerUrl: 'https://testnet.bscscan.com'
+    id: 5545,
+    hexId: '0x15A9',
+    name: 'DuckChain Mainnet',
+    icon: '/chains/duck.png',
+    symbol: 'TON',
+    rpcUrl: 'https://rpc.duckchain.io',
+    blockExplorerUrl: 'https://duckchain.io'
   }
 ]
 
