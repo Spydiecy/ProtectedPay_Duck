@@ -24,7 +24,7 @@
 
 ### 🤖 AI-Powered Assistant
 
-<img align="right" src="https://github.com/user-attachments/assets/5346495d-1fd2-4735-bd29-a96a8ad27d99" width="350px">
+<img align="right" src="https://github.com/user-attachments/assets/3db9c06f-943e-44df-9769-3d15cbedfa82" width="350px">
 
 - **Natural Language Commands**: Send transfers using plain English - "Send 10 TON to alice"
 - **Voice Input Support**: Use your microphone for hands-free interaction
@@ -38,7 +38,7 @@
 
 ### 🛡️ Protected Transfers on DuckChain
 
-<img align="right" src="https://github.com/user-attachments/assets/0bef280d-2ffd-4669-817a-ef8985831dc7" width="350px">
+<img align="right" src="https://github.com/user-attachments/assets/911f23bb-f8e4-4073-8e88-e2e1ed0fb263" width="350px">
 
 - **Escrow-Like Protection**: Funds remain secure until claimed by recipient
 - **Refundable Transfers**: Easily recover funds if sent to the wrong address
@@ -53,7 +53,7 @@
 
 ### 👥 Group Payments
 
-<img align="right" src="https://github.com/user-attachments/assets/35f41b07-3fec-4526-846a-2bc963cd6777" width="350px">
+<img align="right" src="https://github.com/user-attachments/assets/7ed76357-65e8-4723-a4a5-aff59cf6820b" width="350px">
 
 - **Split Expenses Easily**: Divide costs among friends or colleagues
 - **Simple Contributors**: Accept payments from any DuckChain Mainnet user
@@ -66,7 +66,7 @@
 
 ### 💰 Savings Pots
 
-<img align="right" src="https://github.com/user-attachments/assets/0e14b1b2-6224-4a3f-a27d-b4a2a09254cb" width="350px">
+<img align="right" src="https://github.com/user-attachments/assets/d50456be-32a3-4dea-b9af-5c3e7b649a71" width="350px">
 
 - **Goal-Based Savings**: Set targets and track progress visually
 - **DuckChain Mainnet**: Create dedicated savings accounts on DuckChain mainnet
@@ -99,7 +99,7 @@
 
 ###  🤖 MCP Agent
 
-<img align="right" src="https://github.com/user-attachments/assets/bc4e425b-d6f7-49b8-a4fe-8831ba9e5548" width="200px">
+<img align="right" src="https://github.com/user-attachments/assets/34b6c6a1-9c7b-4351-9981-fe3dbcbc8f27" width="400px">
 
 ProtectedPay includes a powerful Model Context Protocol (MCP) agent that provides programmatic access to all platform features on DuckChain Mainnet.
 
@@ -132,7 +132,7 @@ ProtectedPay is built exclusively for the DuckChain Mainnet, offering AI-powered
 </div>
 
 <div align="ledt">
-  <img src="https://github.com/user-attachments/assets/cb9ac79e-9533-414a-9adf-6bec00113708" width="700px">
+  <img src="https://github.com/user-attachments/assets/c19ad0a4-a11b-43fa-a3dc-74ac6e06c5f8" width="700px">
   <p><i>Comprehensive dashboard with activity tracking</i></p>
 </div>
 
@@ -166,7 +166,7 @@ ProtectedPay is built exclusively for the DuckChain Mainnet, offering AI-powered
 ## 💻 User Interface
 
 <div align="left">
-  <img src="https://github.com/user-attachments/assets/7669de82-87e2-4e44-a4dc-c6317cc5b8f1" width="700px">
+  <img src="https://github.com/user-attachments/assets/824ab1ab-e82d-40d4-bda7-6d9e33f57f3e" width="700px">
   <p><i>Modern, intuitive interface with glassmorphism design</i></p>
 </div>
 
@@ -181,7 +181,7 @@ ProtectedPay is built exclusively for the DuckChain Mainnet, offering AI-powered
 ### Dashboard Experience
 
 <div align="ledt">
-  <img src="https://github.com/user-attachments/assets/b7ff4e60-6bb0-4046-b68e-ae0f5a4e84a5" width="700px">
+  <img src="https://github.com/user-attachments/assets/b5c00974-58d7-4157-a2bd-e57fc1c26b41" width="700px">
   <p><i>Comprehensive dashboard with activity tracking</i></p>
 </div>
 
