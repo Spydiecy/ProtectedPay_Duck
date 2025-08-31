@@ -11,6 +11,7 @@
 ## 📋 Contents
 
 - [Features](#-features)
+- [MCP Agent](#-mcp-agent)
 - [Supported Network](#-supported-network)
 - [How It Works](#-how-it-works)
 - [User Interface](#-user-interface)
@@ -93,6 +94,30 @@
 </div>
 
 <br clear="right"/>
+
+<br clear="right"/>
+
+###  🤖 MCP Agent
+
+<img align="right" src="https://github.com/user-attachments/assets/bc4e425b-d6f7-49b8-a4fe-8831ba9e5548" width="200px">
+
+ProtectedPay includes a powerful Model Context Protocol (MCP) agent that provides programmatic access to all platform features on DuckChain Mainnet.
+
+🔧 Agent Features
+- **Complete Smart Contract Integration**: Full read/write access to ProtectedPay contracts
+- **Private Key Management**: Secure wallet integration for transaction signing
+- **Natural Language Processing**: Execute blockchain operations using simple commands
+- **Multi-Operation Support**: Handle transfers, group payments, savings pots, and more
+- **DuckChain Mainnet Optimized**: Native support for Chain ID 5545 and TON token
+
+### 🛡️ Agent Security
+
+- **Non-Custodial**: Private keys are only stored temporarily in session
+- **Local Processing**: All operations happen locally in your environment
+- **Clear Commands**: Explicit private key clearing functionality
+- **Mainnet Ready**: Production-grade security for DuckChain Mainnet operations
+
+For detailed agent documentation and examples, see the [`agent/README.md`](./agent/README.md) file.
 
 ## 🔗 Supported Network
 
